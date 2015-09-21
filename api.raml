@@ -1,0 +1,93 @@
+#%RAML 0.8
+title: How to GET a Cup of Coffee
+version: v1.0
+baseUri: https://starbucks.example.org/
+documentation:
+  - title: Authentication
+    content: !include ./basic-auth.md
+protocols: [HTTPS]
+securitySchemes:
+  - basic:
+      description: |
+          Basics of Authentication
+      type: Basic Authentication
+      describedBy:
+        headers:
+          Authorization:
+            description: |
+              The client sends the user-ID and password, separated by a single colon (":") character, within a base64 encoded string in the credentials.
+            type: string
+        responses:
+          401:
+              description: |
+                Bad or expired token.
+/orders:
+  securedBy: [basic]
+  displayName: Orders.
+  description: Manipulate all order.
+  options:
+    description: Retrieve the HTTP verbs allowed
+    responses:
+      204:
+        headers:
+          Allow:
+            description: |
+                Retrieve the HTTP verbs allowed
+            example: POST, GET
+            required: true
+  /{id}:
+    uriParameters:
+      id:
+        description: |
+            Order identifier.
+        required: true
+        type: string
+        example: f72fc914
+    securedBy: [basic]
+    displayName: An Order
+    description: Manipulate an order.
+    options:
+      description: Retrieve the HTTP verbs allowed.
+      responses:
+        204:
+          headers:
+            Allow:
+              description: |
+                  Retrieve the HTTP verbs allowed
+              example: GET, PUT, DELETE
+              required: true
+    /payments:
+      securedBy: [basic]
+      displayName: Orders Payments
+      description: Manipulate the payments of the order.
+      options:
+        description: Retrieve the HTTP verbs allowed
+        responses:
+          204:
+            headers:
+              Allow:
+                description: |
+                    Retrieve the HTTP verbs allowed
+                example: GET, POST
+                required: true
+      /{id}:
+        uriParameters:
+          id:
+            description: |
+                Orders Payment identifier.
+            required: true
+            type: string
+            example: f72fc915
+        securedBy: [basic]
+        displayName: An Order Payment
+        description: Manipulate a payment of the order.
+        options:
+          description: Retrieve the HTTP verbs allowed
+          responses:
+            204:
+              headers:
+                Allow:
+                  description: |
+                      Retrieve the HTTP verbs allowed
+                  example: GET, DELETE
+                  required: true
