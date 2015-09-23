@@ -2,7 +2,7 @@
   <xs:element name="response">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="metada">
+        <xs:element name="metada" minOccurs="0">
           <xs:complexType>
             <xs:sequence>
               <xs:element name="item" maxOccurs="unbounded" minOccurs="0">
@@ -27,6 +27,7 @@
                     <xs:element type="xs:string" name="drink"/>
                     <xs:element type="xs:string" name="additions"/>
                     <xs:element type="xs:float" name="cost"/>
+                    <xs:element type="xs:string" name="status"/>
                     <xs:element name="_hrefs">
                       <xs:complexType>
                         <xs:simpleContent>

@@ -7,6 +7,8 @@ schemas:
  - error_json: !include ./error-schema.json
  - order_json: !include ./order-schema.json
  - order_xml: !include ./order.xsd
+ - req_order_xml: !include ./req-order.xsd
+ - req_order_json: !include ./req-order-schema.json
 documentation:
   - title: Objectives
     content: The following document describes the functionality of How to GET a Cup of Coffee.
@@ -51,12 +53,14 @@ securitySchemes:
         displayName: Offset
         description: Use this to indicate the first element to return.
         example: 1234
+        required: false
       rows:
         default: 10
         type: integer
         displayName: Rows
         description: Use this to indicate the number of elements to retrive.
         example: 100
+        required: false
       order:
         default: ASC
         type: string
@@ -64,6 +68,7 @@ securitySchemes:
         displayName: Order
         description: Use this to indicate the order of list elements.
         example: DESC
+        required: false
       lazy:
         default: false
         type: string
@@ -71,20 +76,21 @@ securitySchemes:
         displayName: Lazy
         description: Use this to indicate we only want obtain the href of the collections.
         example: true
+        required: false
     headers:
       Accept:
         description: To negociate the type of response.
-        example: application/order-v1+json, application/order-v1+xml
+        example: application/order-v1+json, application/order-v1+xml, application/error-v1+json, application/error-v1+xml
     responses:
       404:
         description: Not Found any order.
         headers:
           Status:
             description: Status
-            example: 200 Ok
+            example: 404 Not Found
           Content-Type:
             description: Content-Type
-            example: application/order-v1+json
+            example: application/error-v1+json
           Allow:
             description: Allow
             example: POST, GET
@@ -144,6 +150,7 @@ securitySchemes:
                     "drink": "latte",
                     "additions": "shot",
                     "cost": 4.5,
+                    "status": "preparing",
                     "_hrefs": {
                       "self": "https://starbucks.example.org/orders/12",
                       "payments": "https://starbucks.example.org/orders/12/payments"
@@ -165,7 +172,106 @@ securitySchemes:
                           <drink>latte</drink>
                           <additions>shot</additions>
                           <cost>4.5</cost>
-                         <_hrefs self="https://starbucks.example.org/orders/12" payments="https://starbucks.example.org/orders/12/payments" />
+                          <status>preparing</status>
+                          <_hrefs self="https://starbucks.example.org/orders/12" payments="https://starbucks.example.org/orders/12/payments" />
+                      </order>
+                </items>
+              </response>
+  post:
+    description: To Created a new order
+    headers:
+      Accept:
+        description: To negociate the type of response.
+        example: application/order-v1+json, application/order-v1+xml
+      Content-Type:
+        description: To indicate the type of the content sent.
+        example: application/req-order-v1+json
+    body:
+      application/req-order-v1+json:
+        schema: req_order_json
+        example: |
+          {
+            "drink": "latte",
+            "additions": ""
+          }
+      application/req-order-v1+xml:
+        schema: req_order_xml
+        example: |
+          <order>
+             <drink>latte</drink>
+             <additions/>
+          </order>
+    responses:
+      400:
+        description: Bad Request
+        headers:
+          Status: 
+            description: Status
+            example: 400 Bad Request
+          Allow:
+            description: Allow
+            example: POST, GET
+          Content-Type:
+            description: Content Type
+            example: application/error-v1+xml
+        body:
+          application/error-v1+json:
+            schema: error_json
+            example: |
+              {
+                "status": 400,
+                "message": "Bad Request missing propertie drink",
+                "detail": "https://starbucks.example.org/doc/orders/#400"
+              }
+          application/error-v1+xml:
+            schema: error_xml
+            example: |
+              <response status="400" message="Bad Request missing propertie drink" detail="https://starbucks.example.org/doc/orders/#400">
+              </response>
+      201:
+        description: Operation Success
+        headers:
+          Status: 
+            description: Status
+            example: 201 Created
+          Allow:
+            description: Allow
+            example: POST, GET
+          Content-Type:
+            description: Content Type
+            example: application/order-v1+xml
+        body:
+          application/order-v1+json:
+            schema: order_json
+            example: |
+              {
+                "status": 201,
+                "message": "Order Created",
+                "detail": "https://starbucks.example.org/doc/orders/",
+                "items": [
+                  {
+                    "drink": "latte",
+                    "additions": "shot",
+                    "cost": 4.5,
+                    "status": "preparing",
+                    "_hrefs": {
+                      "self": "https://starbucks.example.org/orders/1",
+                      "payments": "https://starbucks.example.org/orders/1/payments"
+                    }
+                  }
+                ]
+              }
+          application/order-v1+xml:
+            schema: order_xml
+            example: |
+              <response status="201" message="Order Created" detail="https://starbucks.example.org/doc/orders/">
+                <items>
+                      <order>
+                          <drink>latte</drink>
+                          <additions>shot</additions>
+                          <cost>4.5</cost>
+                          <status>preparing</status>
+                          <_hrefs self="https://starbucks.example.org/orders/1" payments="https://starbucks.example.org/orders/1/payments" />
                       </order>
                 </items>
               </response>
@@ -180,6 +286,331 @@ securitySchemes:
     securedBy: [basic]
     displayName: An Order
     description: Manipulate an order.
+    put:
+      description: Modify the order.
+      headers:
+        Content-type:
+          description: Content-Type.
+          example: application/req-order-v1+json
+        Accept:
+          description: To negociate the type of response.
+          example: application/order-v1+json, application/order-v1+xml, application/error-v1+json, application/error-v1+xml
+        Expect:
+          description: To check if the update is possible.
+          example: 100-Continue
+          required: false
+      body:
+        application/req-order-v1+json:
+          schema: req_order_json
+          example: |
+            {
+              "additions": "shot"
+            }
+        application/req-order-v1+xml:
+          schema: req_order_json
+          example: |
+            <order>
+               <additions>shot</additions>
+            </order>
+      responses:
+        404:
+          description: Order Not Found.
+          headers:
+            Status:
+              description: Status
+              example: 404 Not Found
+            Content-Type:
+              description: Content-Type
+              example: application/error-v1+json
+            Allow:
+              description: Allow
+              example: PUT, GET, DELETE
+          body:
+            application/error-v1+json:
+              schema: error_json
+              example: |
+                {
+                  "status": 404,
+                  "message": "Order not found",
+                  "detail": "https://starbucks.example.org/doc/orders/#404"
+                }
+            application/error-v1+xml:
+              schema: error_xml
+              example: |
+                <response status="404" message="Order not found" detail="https://starbucks.example.org/doc/orders/#404">
+                </response>
+        100:
+          description: The update is possible
+          headers:
+            Status: 
+              description: Status
+              example: 100 Continue
+            Allow:
+              description: Allow
+              example: PUT, DELETE, GET
+            Content-Type:
+              description: Content Type
+              example: application/error-v1+xml
+          body:
+            application/error-v1+json:
+              schema: error_json
+              example: |
+                {
+                  "status": 100,
+                  "message": "The update is possible",
+                  "detail": "https://starbucks.example.org/doc/orders/#100"
+                }
+            application/error-v1+xml:
+              schema: error_xml
+              example: |
+                <response status="100" message="The update is possible" detail="https://starbucks.example.org/doc/orders/#100">
+                </response>
+        417:
+          description: The update not is possible
+          headers:
+            Status: 
+              description: Status
+              example: 417 Expectation Failed
+            Allow:
+              description: Allow
+              example: PUT, DELETE, GET
+            Content-Type:
+              description: Content Type
+              example: application/error-v1+xml
+          body:
+            application/error-v1+json:
+              schema: error_json
+              example: |
+                {
+                  "status": 417,
+                  "message": "The update not is possible",
+                  "detail": "https://starbucks.example.org/doc/orders/#417"
+                }
+            application/error-v1+xml:
+              schema: error_xml
+              example: |
+                <response status="417" message="The update not is possible" detail="https://starbucks.example.org/doc/orders/#417">
+                </response>
+        400:
+          description: Bad Request
+          headers:
+            Status: 
+              description: Status
+              example: 400 Bad Request
+            Allow:
+              description: Allow
+              example: PUT, DELETE, GET
+            Content-Type:
+              description: Content Type
+              example: application/error-v1+xml
+          body:
+            application/error-v1+json:
+              schema: error_json
+              example: |
+                {
+                  "status": 400,
+                  "message": "The addition 'shop' not found",
+                  "detail": "https://starbucks.example.org/doc/orders/#400"
+                }
+            application/error-v1+xml:
+              schema: error_xml
+              example: |
+                <response status="400" message="The addition 'shop' not found" detail="https://starbucks.example.org/doc/orders/#400">
+                </response>
+        200:
+          description: Operation Success
+          headers:
+            Status: 
+              description: Status
+              example: 200 Ok
+            Allow:
+              description: Allow
+              example: PUT, GET, DELETE
+            Content-Type:
+              description: Content Type
+              example: application/order-v1+xml
+          body:
+            application/order-v1+json:
+              schema: order_json
+              example: |
+                {
+                  "status": 200,
+                  "message": "Order Updated",
+                  "detail": "https://starbucks.example.org/doc/orders/",
+                  "items": [
+                    {
+                      "drink": "latte",
+                      "additions": "shot",
+                      "cost": 4.5,
+                      "status": "preparing",
+                      "_hrefs": {
+                        "self": "https://starbucks.example.org/orders/1",
+                        "payments": "https://starbucks.example.org/orders/1/payments"
+                      }
+                    }
+                  ]
+                }
+            application/order-v1+xml:
+              schema: order_xml
+              example: |
+                <response status="200" message="Order Updated" detail="https://starbucks.example.org/doc/orders/">
+                  <items>
+                        <order>
+                            <drink>latte</drink>
+                            <additions>shot</additions>
+                            <cost>4.5</cost>
+                            <status>preparing</status>
+                            <_hrefs self="https://starbucks.example.org/orders/1" payments="https://starbucks.example.org/orders/1/payments" />
+                        </order>
+                  </items>
+                </response>
+        
+    delete:
+      description: Delete the order.
+      headers:
+        Accept:
+          description: To negociate the type of response.
+          example: application/error-v1+json, application/error-v1+xml
+      responses:
+        404:
+          description: Order Not Found.
+          headers:
+            Status:
+              description: Status
+              example: 404 Not Found
+            Content-Type:
+              description: Content-Type
+              example: application/error-v1+json
+            Allow:
+              description: Allow
+              example: PUT, GET, DELETE
+          body:
+            application/error-v1+json:
+              schema: error_json
+              example: |
+                {
+                  "status": 404,
+                  "message": "Order not found",
+                  "detail": "https://starbucks.example.org/doc/orders/#404"
+                }
+            application/error-v1+xml:
+              schema: error_xml
+              example: |
+                <response status="404" message="Order not found" detail="https://starbucks.example.org/doc/orders/#404">
+                </response>
+        200:
+          description: Order Deleted.
+          headers:
+            Status:
+              description: Status
+              example: 200 Ok
+            Content-Type:
+              description: Content-Type
+              example: application/error-v1+json
+            Allow:
+              description: Allow
+              example: PUT, GET, DELETE
+          body:
+            application/error-v1+json:
+              schema: error_json
+              example: |
+                {
+                  "status": 200,
+                  "message": "Order deleted",
+                  "detail": "https://starbucks.example.org/doc/orders/"
+                }
+            application/error-v1+xml:
+              schema: error_xml
+              example: |
+                <response status="200" message="Order deleted" detail="https://starbucks.example.org/doc/orders/">
+                </response>
+    get:
+      description: Retrive the given order
+      queryParameters:
+        fields:
+          description: To limmit the number of parameters to response.
+          displayName: Fields
+          example: drink,status
+          type: string
+          required: false
+      headers:
+        Accept:
+          description: To negociate the type of response.
+          example: application/order-v1+json, application/order-v1+xml
+      responses:
+        404:
+          description: Order Not Found.
+          headers:
+            Status:
+              description: Status
+              example: 404 Not Found
+            Content-Type:
+              description: Content-Type
+              example: application/order-v1+json
+            Allow:
+              description: Allow
+              example: POST, GET
+          body:
+            application/error-v1+json:
+              schema: error_json
+              example: |
+                {
+                  "status": 404,
+                  "message": "Order not found",
+                  "detail": "https://starbucks.example.org/doc/orders/#404"
+                }
+            application/error-v1+xml:
+              schema: error_xml
+              example: |
+                <response status="404" message="Order not found" detail="https://starbucks.example.org/doc/orders/#404">
+                </response>
+        200:
+          description: Operation Sucess, return the orders.
+          headers:
+            Status:
+              description: Status
+              example: 200 Ok
+            Content-Type:
+              description: Content-Type
+              example: application/order-v1+json
+            Allow:
+              description: Allow
+              example: POST, GET
+          body:
+            application/order-v1+json:
+              schema: order_json
+              example: |
+                {
+                  "status": 200,
+                  "message": "Operation Success",
+                  "detail": "https://starbucks.example.org/doc/orders/",
+                  "items": [
+                    {
+                      "drink": "latte",
+                      "additions": "shot",
+                      "cost": 4.5,
+                      "status": "preparing",
+                      "_hrefs": {
+                        "self": "https://starbucks.example.org/orders/12",
+                        "payments": "https://starbucks.example.org/orders/12/payments"
+                      }
+                    }
+                  ]
+                }
+            application/order-v1+xml:
+              schema: order_xml
+              example: |
+                <response status="200" message="Operation Success" detail="https://starbucks.example.org/doc/orders/">
+                  <items>
+                        <order>
+                            <drink>latte</drink>
+                            <additions>shot</additions>
+                            <cost>4.5</cost>
+                            <status>preparing</status>
+                            <_hrefs self="https://starbucks.example.org/orders/12" payments="https://starbucks.example.org/orders/12/payments" />
+                        </order>
+                  </items>
+                </response>
     options:
       description: Retrieve the HTTP verbs allowed.
       responses:
@@ -194,6 +625,10 @@ securitySchemes:
       securedBy: [basic]
       displayName: Orders Payments
       description: Manipulate the payments of the order.
+      post:
+        description: <<insert text or markdown here>>
+      get:
+        description: <<insert text or markdown here>>
       options:
         description: Retrieve the HTTP verbs allowed
         responses:
@@ -215,6 +650,67 @@ securitySchemes:
         securedBy: [basic]
         displayName: An Order Payment
         description: Manipulate a payment of the order.
+        get:
+          description: Retrive the payment given.
+        delete:
+          description: Delete the payment.
+          headers:
+            Accept:
+              description: To negociate the type of response.
+              example: application/error-v1+json, application/error-v1+xml
+          responses:
+            404:
+              description: Payment Not Found.
+              headers:
+                Status:
+                  description: Status
+                  example: 404 Not Found
+                Content-Type:
+                  description: Content-Type
+                  example: application/error-v1+json
+                Allow:
+                  description: Allow
+                  example: GET, DELETE
+              body:
+                application/error-v1+json:
+                  schema: error_json
+                  example: |
+                    {
+                      "status": 404,
+                      "message": "Payment not found",
+                      "detail": "https://starbucks.example.org/doc/orders/#404"
+                    }
+                application/error-v1+xml:
+                  schema: error_xml
+                  example: |
+                    <response status="404" message="Order not found" detail="https://starbucks.example.org/doc/orders/#404">
+                    </response>
+            200:
+              description: Payment Deleted.
+              headers:
+                Status:
+                  description: Status
+                  example: 200 Ok
+                Content-Type:
+                  description: Content-Type
+                  example: application/error-v1+json
+                Allow:
+                  description: Allow
+                  example: GET, DELETE
+              body:
+                application/error-v1+json:
+                  schema: error_json
+                  example: |
+                    {
+                      "status": 200,
+                      "message": "Payment deleted",
+                      "detail": "https://starbucks.example.org/doc/orders/"
+                    }
+                application/error-v1+xml:
+                  schema: error_xml
+                  example: |
+                    <response status="200" message="Payment deleted" detail="https://starbucks.example.org/doc/orders/">
+                    </response>
         options:
           description: Retrieve the HTTP verbs allowed
           responses:

@@ -94,6 +94,10 @@
             "id": "http://jsonschema.net/items/0/cost",
             "type": "number"
           },
+          "status": {
+            "id": "http://jsonschema.net/items/0/status",
+            "type": "string"
+          },
           "_hrefs": {
             "id": "http://jsonschema.net/items/0/_hrefs",
             "type": "object",
@@ -116,7 +120,6 @@
     "status",
     "message",
     "detail",
-    "metada",
     "items"
   ]
 }
