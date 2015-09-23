@@ -2,7 +2,14 @@
 title: How to GET a Cup of Coffee
 version: v1.0
 baseUri: https://starbucks.example.org/
+schemas:
+ - error_xml: !include ./error.xsd
+ - error_json: !include ./error-schema.json
+ - order_json: !include ./order-schema.json
+ - order_xml: !include ./order.xsd
 documentation:
+  - title: Objectives
+    content: The following document describes the functionality of How to GET a Cup of Coffee.
   - title: Authentication
     content: !include ./basic-auth.md
 protocols: [HTTPS]
@@ -35,14 +42,141 @@ securitySchemes:
                 Retrieve the HTTP verbs allowed
             example: POST, GET
             required: true
+  get:
+    description: Retrieve all orders
+    queryParameters:
+      offset:
+        default: 0
+        type: integer
+        displayName: Offset
+        description: Use this to indicate the first element to return.
+        example: 1234
+      rows:
+        default: 10
+        type: integer
+        displayName: Rows
+        description: Use this to indicate the number of elements to retrive.
+        example: 100
+      order:
+        default: ASC
+        type: string
+        enum: [ASC, DESC]
+        displayName: Order
+        description: Use this to indicate the order of list elements.
+        example: DESC
+      lazy:
+        default: false
+        type: string
+        enum: [true, false]
+        displayName: Lazy
+        description: Use this to indicate we only want obtain the href of the collections.
+        example: true
+    headers:
+      Accept:
+        description: To negociate the type of response.
+        example: application/order-v1+json, application/order-v1+xml
+    responses:
+      404:
+        description: Not Found any order.
+        headers:
+          Status:
+            description: Status
+            example: 200 Ok
+          Content-Type:
+            description: Content-Type
+            example: application/order-v1+json
+          Allow:
+            description: Allow
+            example: POST, GET
+        body:
+          application/error-v1+json:
+            schema: error_json
+            example: |
+              {
+                "status": 404,
+                "message": "Orders not found",
+                "detail": "https://starbucks.example.org/doc/orders/#404"
+              }
+          application/error-v1+xml:
+            schema: error_xml
+            example: |
+              <response status="404" message="Orders not found" detail="https://starbucks.example.org/doc/orders/#404">
+              </response>
+      200:
+        description: Operation Sucess, return the orders.
+        headers:
+          Status:
+            description: Status
+            example: 200 Ok
+          Content-Type:
+            description: Content-Type
+            example: application/order-v1+json
+          Allow:
+            description: Allow
+            example: POST, GET
+        body:
+          application/order-v1+json:
+            schema: order_json
+            example: |
+              {
+                "status": 200,
+                "message": "Operation Success",
+                "detail": "https://starbucks.example.org/doc/orders/",
+                "metada": [
+                  {
+                    "type": "href",
+                    "name": "next",
+                    "value": "https://starbucks.example.org/orders/?rows=10&offset=20"
+                  },
+                  {
+                    "type": "href",
+                    "name": "back",
+                    "value": "https://starbucks.example.org/orders/?rows=10&offset=0"
+                  },
+                  {
+                    "type": "counter",
+                    "name": "total_rows",
+                    "value": 100
+                  }
+                ],
+                "items": [
+                  {
+                    "drink": "latte",
+                    "additions": "shot",
+                    "cost": 4.5,
+                    "_hrefs": {
+                      "self": "https://starbucks.example.org/orders/12",
+                      "payments": "https://starbucks.example.org/orders/12/payments"
+                    }
+                  }
+                ]
+              }
+          application/order-v1+xml:
+            schema: order_xml
+            example: |
+              <response status="200" message="Operation Success" detail="https://starbucks.example.org/doc/orders/">
+                 <metada>
+                    <item type="href" name="next"><![CDATA[https://starbucks.example.org/orders/?rows=10&offset=20]]></item>
+                    <item type="href" name="back"><![CDATA[https://starbucks.example.org/orders/?rows=10&offset=0]]></item>
+                    <item type="counter" name="rows_total">100</item>
+                 </metada>
+                <items>
+                      <order>
+                          <drink>latte</drink>
+                          <additions>shot</additions>
+                          <cost>4.5</cost>
+                         <_hrefs self="https://starbucks.example.org/orders/12" payments="https://starbucks.example.org/orders/12/payments" />
+                      </order>
+                </items>
+              </response>
   /{id}:
     uriParameters:
       id:
         description: |
             Order identifier.
         required: true
-        type: string
-        example: f72fc914
+        type: integer
+        example: 1234
     securedBy: [basic]
     displayName: An Order
     description: Manipulate an order.
@@ -77,7 +211,7 @@ securitySchemes:
                 Orders Payment identifier.
             required: true
             type: string
-            example: f72fc915
+            example: 12345
         securedBy: [basic]
         displayName: An Order Payment
         description: Manipulate a payment of the order.
