@@ -9,6 +9,8 @@ schemas:
  - order_xml: !include ./order.xsd
  - req_order_xml: !include ./req-order.xsd
  - req_order_json: !include ./req-order-schema.json
+ - payment_xml: !include ./payment.xsd
+ - payment_json: !include ./payment-schema.json
 documentation:
   - title: Objectives
     content: The following document describes the functionality of How to GET a Cup of Coffee.
@@ -546,7 +548,7 @@ securitySchemes:
               example: 404 Not Found
             Content-Type:
               description: Content-Type
-              example: application/order-v1+json
+              example: application/error-v1+json
             Allow:
               description: Allow
               example: POST, GET
@@ -628,7 +630,137 @@ securitySchemes:
       post:
         description: <<insert text or markdown here>>
       get:
-        description: <<insert text or markdown here>>
+        description: Retrieve all payments
+        queryParameters:
+          offset:
+            default: 0
+            type: integer
+            displayName: Offset
+            description: Use this to indicate the first element to return.
+            example: 1234
+            required: false
+          rows:
+            default: 10
+            type: integer
+            displayName: Rows
+            description: Use this to indicate the number of elements to retrive.
+            example: 100
+            required: false
+          order:
+            default: ASC
+            type: string
+            enum: [ASC, DESC]
+            displayName: Order
+            description: Use this to indicate the payment of list elements.
+            example: DESC
+            required: false
+          lazy:
+            default: false
+            type: string
+            enum: [true, false]
+            displayName: Lazy
+            description: Use this to indicate we only want obtain the href of the collections.
+            example: true
+            required: false
+        headers:
+            Accept:
+              description: To negociate the type of response.
+              example: application/error-v1+json, application/error-v1+xml, application/payment-v1+json, application/payment-v1+xml
+        responses:
+          404:
+            description: Payment Not Found.
+            headers:
+              Status:
+                description: Status
+                example: 404 Not Found
+              Content-Type:
+                description: Content-Type
+                example: application/error-v1+json
+              Allow:
+                description: Allow
+                example: POST, GET
+            body:
+              application/error-v1+json:
+                schema: error_json
+                example: |
+                  {
+                    "status": 404,
+                    "message": "Payments not found",
+                    "detail": "https://starbucks.example.org/doc/payments/#404"
+                  }
+              application/error-v1+xml:
+                schema: error_xml
+                example: |
+                  <response status="404" message="Payments not found" detail="https://starbucks.example.org/doc/payments/#404">
+                  </response>
+          200:
+            description: Retrive All Payments.
+            headers:
+              Status:
+                description: Status
+                example: 200 Ok
+              Content-Type:
+                description: Content-Type
+                example: application/payment-v1+json
+              Allow:
+                description: Allow
+                example: POST, GET
+            body:
+              application/payment-v1+xml:
+                schema: payment_xml
+                example: |
+                  <response status="200" message="Operation Success" detail="https://starbucks.example.org/doc/orders/">
+                    <metada>
+                      <item type="href" name="next"><![CDATA[https://starbucks.example.org/orders/12/payments/?rows=10&offset=20]]></item>
+                      <item type="href" name="back"><![CDATA[https://starbucks.example.org/orders/12/payments/?rows=10&offset=0]]></item>
+                      <item type="counter" name="rows_total">100</item>
+                    </metada>
+                    <items>
+                        <payment>
+                            <cardNo>1234582990303020</cardNo>
+                            <expires>07/07</expires>
+                            <name>John Doe</name>
+                            <amount>4.50</amount>
+                            <_hrefs self="https://starbucks.example.org/orders/12/payments/123"/>
+                        </payment>
+                    </items>
+                  </response>
+              application/payment-v1+json:
+                schema: payment_json
+                example: |
+                  {
+                    "status": 200,
+                    "message": "Operation Success",
+                    "detail": "https://starbucks.example.org/doc/payments/",
+                    "metada": [
+                      {
+                        "type": "href",
+                        "name": "next",
+                        "value": "https://starbucks.example.org/orders/12/payments/?rows=10&offset=20"
+                      },
+                      {
+                        "type": "href",
+                        "name": "back",
+                        "value": "https://starbucks.example.org/orders/12/payments/?rows=10&offset=0"
+                      },
+                      {
+                        "type": "counter",
+                        "name": "total_rows",
+                        "value": 100
+                      }
+                    ],
+                    "items": [
+                      {
+                        "cardNo": "1234567789223141",
+                        "expires": "07/07",
+                        "name": "John Doe",
+                        "amount": 4.5,
+                        "_hrefs": {
+                          "self": "https://starbucks.example.org/orders/12/payments/123"
+                        }
+                      }
+                    ]
+                  }
       options:
         description: Retrieve the HTTP verbs allowed
         responses:
@@ -652,6 +784,13 @@ securitySchemes:
         description: Manipulate a payment of the order.
         get:
           description: Retrive the payment given.
+          queryParameters:
+            fields:
+              description: To limmit the number of parameters to response.
+              displayName: Fields
+              example: cardNo,name
+              type: string
+              required: false
         delete:
           description: Delete the payment.
           headers:
@@ -678,12 +817,12 @@ securitySchemes:
                     {
                       "status": 404,
                       "message": "Payment not found",
-                      "detail": "https://starbucks.example.org/doc/orders/#404"
+                      "detail": "https://starbucks.example.org/doc/payments/#404"
                     }
                 application/error-v1+xml:
                   schema: error_xml
                   example: |
-                    <response status="404" message="Order not found" detail="https://starbucks.example.org/doc/orders/#404">
+                    <response status="404" message="Order not found" detail="https://starbucks.example.org/doc/payments/#404">
                     </response>
             200:
               description: Payment Deleted.
@@ -704,12 +843,12 @@ securitySchemes:
                     {
                       "status": 200,
                       "message": "Payment deleted",
-                      "detail": "https://starbucks.example.org/doc/orders/"
+                      "detail": "https://starbucks.example.org/doc/payments/"
                     }
                 application/error-v1+xml:
                   schema: error_xml
                   example: |
-                    <response status="200" message="Payment deleted" detail="https://starbucks.example.org/doc/orders/">
+                    <response status="200" message="Payment deleted" detail="https://starbucks.example.org/doc/payments/">
                     </response>
         options:
           description: Retrieve the HTTP verbs allowed
