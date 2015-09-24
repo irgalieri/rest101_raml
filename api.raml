@@ -11,6 +11,8 @@ schemas:
  - req_order_json: !include ./req-order-schema.json
  - payment_xml: !include ./payment.xsd
  - payment_json: !include ./payment-schema.json
+ - req_payment_xml: !include ./req-payment.xsd
+ - req_payment_json: !include ./req-payment-schema.json
 documentation:
   - title: Objectives
     content: The following document describes the functionality of How to GET a Cup of Coffee.
@@ -628,7 +630,132 @@ securitySchemes:
       displayName: Orders Payments
       description: Manipulate the payments of the order.
       post:
-        description: <<insert text or markdown here>>
+        description: Create a payment
+        headers:
+          Accept:
+            description: To negociate the type of response.
+            example: application/error-v1+json, application/error-v1+xml, application/payment-v1+json, application/payment-v1+xml
+          Content-Type:
+            description: Content Type
+            example: application/req-payment-v1+json
+        body:
+          application/req-payment-v1+json:
+            schema: req_payment_json
+            example: |
+              {
+                "cardNo": "12336272721623871238",
+                "expires": "07/07",
+                "name": "John Doe",
+                "amount": 4.5
+              }
+          application/req-payment-v1+xml:
+            schema: req_payment_xml
+            example: |
+              <payment>
+                 <cardNo>123456789</cardNo>
+                 <expires>07/07</expires>
+                 <name>John Doe</name>
+                 <amount>4.00</amount>
+              </payment>
+        responses:
+          404:
+            description: Order Not Found.
+            headers:
+              Status:
+                description: Status
+                example: 404 Not Found
+              Content-Type:
+                description: Content-Type
+                example: application/error-v1+json
+              Allow:
+                description: Allow
+                example: POST, GET
+            body:
+              application/error-v1+json:
+                schema: error_json
+                example: |
+                  {
+                    "status": 404,
+                    "message": "Order not found",
+                    "detail": "https://starbucks.example.org/doc/orders/#404"
+                  }
+              application/error-v1+xml:
+                schema: error_xml
+                example: |
+                  <response status="404" message="Order not found" detail="https://starbucks.example.org/doc/orders/#404">
+                  </response>
+          400:
+            description: Bad Request.
+            headers:
+              Status:
+                description: Status
+                example: 400 Bad Request
+              Content-Type:
+                description: Content-Type
+                example: application/error-v1+json
+              Allow:
+                description: Allow
+                example: POST, GET
+            body:
+              application/error-v1+json:
+                schema: error_json
+                example: |
+                  {
+                    "status": 400,
+                    "message": "Invalid Card Number",
+                    "detail": "https://starbucks.example.org/doc/payments/#400"
+                  }
+              application/error-v1+xml:
+                schema: error_xml
+                example: |
+                  <response status="400" message="Invalid Card Number" detail="https://starbucks.example.org/doc/payments/#400">
+                  </response>
+          201:
+            description: Payment created.
+            headers:
+              Status:
+                description: Status
+                example: 201 Created
+              Content-Type:
+                description: Content-Type
+                example: application/payment-v1+json
+              Allow:
+                description: Allow
+                example: POST, GET
+            body:
+              application/payment-v1+json:
+                schema: payment_json
+                example: |
+                  {
+                    "status": 201,
+                    "message": "Payment Created",
+                    "detail": "https://starbucks.example.org/doc/payments/",
+                    "items": [
+                      {
+                        "cardNo": "1234567789223141",
+                        "expires": "07/07",
+                        "name": "John Doe",
+                        "amount": 4.5,
+                        "_hrefs": {
+                          "self": "https://starbucks.example.org/orders/12/payments/123"
+                        }
+                      }
+                    ]
+                  }
+              application/payment-v1+xml:
+                schema: payment_xml
+                example: |
+                  <response status="201" message="Payment Created" detail="https://starbucks.example.org/doc/payments/">
+                    <items>
+                        <payment>
+                            <cardNo>1234582990303020</cardNo>
+                            <expires>07/07</expires>
+                            <name>John Doe</name>
+                            <amount>4.50</amount>
+                            <_hrefs self="https://starbucks.example.org/orders/12/payments/123"/>
+                        </payment>
+                    </items>
+                  </response>
       get:
         description: Retrieve all payments
         queryParameters:
@@ -709,7 +836,7 @@ securitySchemes:
               application/payment-v1+xml:
                 schema: payment_xml
                 example: |
-                  <response status="200" message="Operation Success" detail="https://starbucks.example.org/doc/orders/">
+                  <response status="200" message="Operation Success" detail="https://starbucks.example.org/doc/payments/">
                     <metada>
                       <item type="href" name="next"><![CDATA[https://starbucks.example.org/orders/12/payments/?rows=10&offset=20]]></item>
                       <item type="href" name="back"><![CDATA[https://starbucks.example.org/orders/12/payments/?rows=10&offset=0]]></item>
@@ -791,6 +918,83 @@ securitySchemes:
               example: cardNo,name
               type: string
               required: false
+          headers:
+            Accept:
+              description: To negociate the type of response.
+              example: application/error-v1+json, application/error-v1+xml, application/payment-v1+json, application/payment-v1+xml
+          responses:
+            404:
+              description: Payment Not Found.
+              headers:
+                Status:
+                  description: Status
+                  example: 404 Not Found
+                Content-Type:
+                  description: Content-Type
+                  example: application/error-v1+json
+                Allow:
+                  description: Allow
+                  example: GET, DELETE
+              body:
+                application/error-v1+json:
+                  schema: error_json
+                  example: |
+                    {
+                      "status": 404,
+                      "message": "Payment not found",
+                      "detail": "https://starbucks.example.org/doc/payments/#404"
+                    }
+                application/error-v1+xml:
+                  schema: error_xml
+                  example: |
+                    <response status="404" message="Payments not found" detail="https://starbucks.example.org/doc/payments/#404">
+                    </response>
+            200:
+              description: Retrive the payment given.
+              headers:
+                Status:
+                  description: Status
+                  example: 200 Ok
+                Content-Type:
+                  description: Content-Type
+                  example: application/payment-v1+json
+                Allow:
+                  description: Allow
+                  example: GET, DELETE
+              body:
+                application/payment-v1+xml:
+                  schema: payment_xml
+                  example: |
+                    <response status="200" message="Operation Success" detail="https://starbucks.example.org/doc/payments/">
+                      <items>
+                          <payment>
+                              <cardNo>1234582990303020</cardNo>
+                              <expires>07/07</expires>
+                              <name>John Doe</name>
+                              <amount>4.50</amount>
+                              <_hrefs self="https://starbucks.example.org/orders/12/payments/123"/>
+                          </payment>
+                      </items>
+                    </response>
+                application/payment-v1+json:
+                  schema: payment_json
+                  example: |
+                    {
+                      "status": 200,
+                      "message": "Operation Success",
+                      "detail": "https://starbucks.example.org/doc/payments/",
+                      "items": [
+                        {
+                          "cardNo": "1234567789223141",
+                          "expires": "07/07",
+                          "name": "John Doe",
+                          "amount": 4.5,
+                          "_hrefs": {
+                            "self": "https://starbucks.example.org/orders/12/payments/123"
+                          }
+                        }
+                      ]
+                    }
         delete:
           description: Delete the payment.
           headers:
