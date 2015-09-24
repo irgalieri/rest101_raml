@@ -1,0 +1,2348 @@
+<!DOCTYPE HTML><html><head><title>How to GET a Cup of Coffee API documentation</title><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta http-equiv="Content-Type" content="text/html; charset=utf-8"><meta name="generator" content="https://github.com/kevinrenskers/raml2html 2.1.0"><link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css"><link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/styles/default.min.css"><script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script><script type="text/javascript" src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script><script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/8.1/highlight.min.js"></script><script type="text/javascript">
+      $(document).ready(function() {
+        $('.page-header pre code, .top-resource-description pre code').each(function(i, block) {
+          hljs.highlightBlock(block);
+        });
+
+        $('[data-toggle]').click(function() {
+          var selector = $(this).data('target') + ' pre code';
+          $(selector).each(function(i, block) {
+            hljs.highlightBlock(block);
+          });
+        });
+
+        // open modal on hashes like #_action_get
+        $(window).bind('hashchange', function(e) {
+          var anchor_id = document.location.hash.substr(1); //strip #
+          var element = $('#' + anchor_id);
+
+          // do we have such element + is it a modal?  --> show it
+          if (element.length && element.hasClass('modal')) {
+            element.modal('show');
+          }
+        });
+
+        // execute hashchange on first page load
+        $(window).trigger('hashchange');
+
+        // remove url fragment on modal hide
+        $('.modal').on('hidden.bs.modal', function() {
+          if(history && history.replaceState) {
+            history.replaceState({}, '', '#');
+          }
+        });
+      });
+    </script><style>
+      .hljs {
+        background: transparent;
+      }
+      .parent {
+        color: #999;
+      }
+      .list-group-item > .badge {
+        float: none;
+        margin-right: 6px;
+      }
+      .panel-title > .methods {
+        float: right;
+      }
+      .badge {
+        border-radius: 0;
+        text-transform: uppercase;
+        width: 70px;
+        font-weight: normal;
+        color: #f3f3f6;
+        line-height: normal;
+      }
+      .badge_get {
+        background-color: #63a8e2;
+      }
+      .badge_post {
+        background-color: #6cbd7d;
+      }
+      .badge_put {
+        background-color: #22bac4;
+      }
+      .badge_delete {
+        background-color: #d26460;
+      }
+      .badge_patch {
+        background-color: #ccc444;
+      }
+      .list-group, .panel-group {
+        margin-bottom: 0;
+      }
+      .panel-group .panel+.panel-white {
+        margin-top: 0;
+      }
+      .panel-group .panel-white {
+        border-bottom: 1px solid #F5F5F5;
+        border-radius: 0;
+      }
+      .panel-white:last-child {
+        border-bottom-color: white;
+        -webkit-box-shadow: none;
+        box-shadow: none;
+      }
+      .panel-white .panel-heading {
+        background: white;
+      }
+      .tab-pane ul {
+        padding-left: 2em;
+      }
+      .tab-pane h2 {
+        font-size: 1.2em;
+        padding-bottom: 4px;
+        border-bottom: 1px solid #ddd;
+      }
+      .tab-pane h3 {
+        font-size: 1.1em;
+      }
+      .tab-content {
+        border-left: 1px solid #ddd;
+        border-right: 1px solid #ddd;
+        border-bottom: 1px solid #ddd;
+        padding: 10px;
+      }
+      #sidebar {
+        margin-top: 30px;
+        padding-right: 5px;
+        overflow: auto;
+        height: 90%;
+      }
+      .top-resource-description {
+        border-bottom: 1px solid #ddd;
+        background: #fcfcfc;
+        padding: 15px 15px 0 15px;
+        margin: -15px -15px 10px -15px;
+      }
+      .resource-description {
+        border-bottom: 1px solid #fcfcfc;
+        background: #fcfcfc;
+        padding: 15px 15px 0 15px;
+        margin: -15px -15px 10px -15px;
+      }
+      .resource-description p:last-child {
+        margin: 0;
+      }
+      .list-group .badge {
+        float: left;
+      }
+      .method_description {
+        margin-left: 85px;
+      }
+      .method_description p:last-child {
+        margin: 0;
+      }
+      .list-group-item {
+        cursor: pointer;
+      }
+      .list-group-item:hover {
+        background-color: #f5f5f5;
+      }
+    </style></head><body data-spy="scroll" data-target="#sidebar"><div class="container"><div class="row"><div class="col-md-9" role="main"><div class="page-header"><h1>How to GET a Cup of Coffee API documentation <small>version v1.0</small></h1><p>https://starbucks.example.org/</p><h3 id="Objectives"><a href="#Objectives">Objectives</a></h3><p>The following document describes the functionality of How to GET a Cup of Coffee.</p><h3 id="Authentication"><a href="#Authentication">Authentication</a></h3><p>The <strong>basic</strong> authentication scheme is based on the model that the user agent must authenticate itself with a user-ID and a password for each realm. The realm value should be considered an opaque string which can only be compared for equality with other realms on that server. The server will authorize the request only if it can validate the user-ID and password for the protection space of the Request-URI. There are no optional authentication parameters.</p><p>Upon receipt of an unauthorized request for a URI within the protection space, the server should respond with a challenge like the following:</p><pre><code>WWW-Authenticate: Basic realm="SNMP Gateway API"
+</code></pre><p>where "SNMP Gateway API" is the string assigned by the server to identify the protection space of the Request-URI.</p><p>To receive authorization, the client sends the user-ID and password, separated by a single colon (":") character, within a base64 encoded string in the credentials.</p><ul><li><strong>basic-credentials</strong> = "Basic" SP basic-cookie</li><li><strong>basic-cookie</strong> = base64 encoding of userid-password, except not limited to 76 char/line</li><li><strong>userid-password</strong> = [ token ] ":" *TEXT</li></ul><p>If the user agent wishes to send the user-ID "Aladdin" and password "open sesame", it would use the following header field:</p><pre><code>Authorization: Basic QWxhZGRpbjpvcGVuIHNlc2FtZQ==
+</code></pre><p>The basic authentication scheme is a non-secure method of filtering unauthorized access to resources on an HTTP server. It is based on the assumption that the connection between the client and the server can be regarded as a trusted carrier. As this is not generally true on an open network, the basic authentication scheme should be used accordingly. In spite of this, clients should implement the scheme in order to communicate with servers that use it.</p></div><div class="panel panel-default"><div class="panel-heading"><h3 id="orders" class="panel-title">Orders.</h3></div><div class="panel-body"><div class="top-resource-description"><p>Manipulate all order.</p></div><div class="panel-group"><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_orders"><span class="parent"></span>/orders</a> <span class="methods"><a href="#orders_options"><span class="badge badge_options">options <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a> <a href="#orders_get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a> <a href="#orders_post"><span class="badge badge_post">post <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_orders" class="panel-collapse collapse"><div class="panel-body"><div class="list-group"><div onclick="window.location.href = '#orders_options'" class="list-group-item"><span class="badge badge_options">options <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Retrieve the HTTP verbs allowed</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#orders_get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Retrieve all orders</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#orders_post'" class="list-group-item"><span class="badge badge_post">post <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>To Created a new order</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="orders_options"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_options">options <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent"></span>/orders</h4></div><div class="modal-body"><div class="alert alert-info"><p>Retrieve the HTTP verbs allowed</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by basic<p>Basics of Authentication</p></div><ul class="nav nav-tabs"><li><a href="#orders_options_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane" id="orders_options_response"><h2>HTTP status code <a href="http://httpstatus.es/204" target="_blank">204</a></h2><h3>Headers</h3><ul><li><strong>Allow</strong>: <em>required (string)</em><p>Retrieve the HTTP verbs allowed</p><p><strong>Example</strong>:</p><pre>POST, GET</pre></li></ul></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="orders_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent"></span>/orders</h4></div><div class="modal-body"><div class="alert alert-info"><p>Retrieve all orders</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by basic<p>Basics of Authentication</p></div><ul class="nav nav-tabs"><li class="active"><a href="#orders_get_request" data-toggle="tab">Request</a></li><li><a href="#orders_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="orders_get_request"><h3>Headers</h3><ul><li><strong>Accept</strong>: <em>(string)</em><p>To negociate the type of response.</p><p><strong>Example</strong>:</p><pre>application/order-v1+json, application/order-v1+xml, application/error-v1+json, application/error-v1+xml</pre></li></ul><h3>Query Parameters</h3><ul><li><strong>Offset</strong>: <em>(integer)</em><p>Use this to indicate the first element to return.</p><p><strong>Example</strong>:</p><pre><code>1234</code></pre></li><li><strong>Rows</strong>: <em>(integer - default: 10)</em><p>Use this to indicate the number of elements to retrive.</p><p><strong>Example</strong>:</p><pre><code>100</code></pre></li><li><strong>Order</strong>: <em>(one of ASC, DESC - default: ASC)</em><p>Use this to indicate the order of list elements.</p><p><strong>Example</strong>:</p><pre>DESC</pre></li><li><strong>Lazy</strong>: <em>(one of true, false)</em><p>Use this to indicate we only want obtain the href of the collections.</p><p><strong>Example</strong>:</p><pre>true</pre></li></ul></div><div class="tab-pane" id="orders_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>Operation Sucess, return the orders.</p><h3>Headers</h3><ul><li><strong>Status</strong>: <em>(string)</em><p>Status</p><p><strong>Example</strong>:</p><pre>200 Ok</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content-Type</p><p><strong>Example</strong>:</p><pre>application/order-v1+json</pre></li><li><strong>Allow</strong>: <em>(string)</em><p>Allow</p><p><strong>Example</strong>:</p><pre>POST, GET</pre></li></ul><h3>Body</h3><p><strong>Type: application/order-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "status": {
+      "id": "http://jsonschema.net/status",
+      "type": "integer"
+    },
+    "message": {
+      "id": "http://jsonschema.net/message",
+      "type": "string"
+    },
+    "detail": {
+      "id": "http://jsonschema.net/detail",
+      "type": "string"
+    },
+    "metada": {
+      "id": "http://jsonschema.net/metada",
+      "type": "array",
+      "items": [
+        {
+          "id": "http://jsonschema.net/metada/0",
+          "type": "object",
+          "properties": {
+            "type": {
+              "id": "http://jsonschema.net/metada/0/type",
+              "type": "string"
+            },
+            "name": {
+              "id": "http://jsonschema.net/metada/0/name",
+              "type": "string"
+            },
+            "value": {
+              "id": "http://jsonschema.net/metada/0/value",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "id": "http://jsonschema.net/metada/1",
+          "type": "object",
+          "properties": {
+            "type": {
+              "id": "http://jsonschema.net/metada/1/type",
+              "type": "string"
+            },
+            "name": {
+              "id": "http://jsonschema.net/metada/1/name",
+              "type": "string"
+            },
+            "value": {
+              "id": "http://jsonschema.net/metada/1/value",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "id": "http://jsonschema.net/metada/2",
+          "type": "object",
+          "properties": {
+            "type": {
+              "id": "http://jsonschema.net/metada/2/type",
+              "type": "string"
+            },
+            "name": {
+              "id": "http://jsonschema.net/metada/2/name",
+              "type": "string"
+            },
+            "value": {
+              "id": "http://jsonschema.net/metada/2/value",
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    },
+    "items": {
+      "id": "http://jsonschema.net/items",
+      "type": "array",
+      "items": {
+        "id": "http://jsonschema.net/items/0",
+        "type": "object",
+        "properties": {
+          "drink": {
+            "id": "http://jsonschema.net/items/0/drink",
+            "type": "string"
+          },
+          "additions": {
+            "id": "http://jsonschema.net/items/0/additions",
+            "type": "string"
+          },
+          "cost": {
+            "id": "http://jsonschema.net/items/0/cost",
+            "type": "number"
+          },
+          "status": {
+            "id": "http://jsonschema.net/items/0/status",
+            "type": "string"
+          },
+          "_hrefs": {
+            "id": "http://jsonschema.net/items/0/_hrefs",
+            "type": "object",
+            "properties": {
+              "self": {
+                "id": "http://jsonschema.net/items/0/_hrefs/self",
+                "type": "string"
+              },
+              "payments": {
+                "id": "http://jsonschema.net/items/0/_hrefs/payments",
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "status",
+    "message",
+    "detail",
+    "items"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "status": 200,
+  "message": "Operation Success",
+  "detail": "https://starbucks.example.org/doc/orders/",
+  "metada": [
+    {
+      "type": "href",
+      "name": "next",
+      "value": "https://starbucks.example.org/orders/?rows=10&amp;offset=20"
+    },
+    {
+      "type": "href",
+      "name": "back",
+      "value": "https://starbucks.example.org/orders/?rows=10&amp;offset=0"
+    },
+    {
+      "type": "counter",
+      "name": "total_rows",
+      "value": 100
+    }
+  ],
+  "items": [
+    {
+      "drink": "latte",
+      "additions": "shot",
+      "cost": 4.5,
+      "status": "preparing",
+      "_hrefs": {
+        "self": "https://starbucks.example.org/orders/12",
+        "payments": "https://starbucks.example.org/orders/12/payments"
+      }
+    }
+  ]
+}
+</code></pre><p><strong>Type: application/order-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="response"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name="metada" minOccurs="0"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="item" maxOccurs="unbounded" minOccurs="0"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:simpleContent&gt;
+                    &lt;xs:extension base="xs:string"&gt;
+                      &lt;xs:attribute type="xs:string" name="type" use="optional"/&gt;
+                      &lt;xs:attribute type="xs:string" name="name" use="optional"/&gt;
+                    &lt;/xs:extension&gt;
+                  &lt;/xs:simpleContent&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name="items"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="order" maxOccurs="unbounded" minOccurs="0"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element type="xs:string" name="drink"/&gt;
+                    &lt;xs:element type="xs:string" name="additions"/&gt;
+                    &lt;xs:element type="xs:float" name="cost"/&gt;
+                    &lt;xs:element type="xs:string" name="status"/&gt;
+                    &lt;xs:element name="_hrefs"&gt;
+                      &lt;xs:complexType&gt;
+                        &lt;xs:simpleContent&gt;
+                          &lt;xs:extension base="xs:string"&gt;
+                            &lt;xs:attribute type="xs:string" name="self" use="optional"/&gt;
+                            &lt;xs:attribute type="xs:string" name="payments" use="optional"/&gt;
+                          &lt;/xs:extension&gt;
+                        &lt;/xs:simpleContent&gt;
+                      &lt;/xs:complexType&gt;
+                    &lt;/xs:element&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute type="xs:short" name="status"/&gt;
+      &lt;xs:attribute type="xs:string" name="message"/&gt;
+      &lt;xs:attribute type="xs:string" name="detail"/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;response status="200" message="Operation Success" detail="https://starbucks.example.org/doc/orders/"&gt;
+   &lt;metada&gt;
+      &lt;item type="href" name="next"&gt;&lt;![CDATA[https://starbucks.example.org/orders/?rows=10&amp;offset=20]]&gt;&lt;/item&gt;
+      &lt;item type="href" name="back"&gt;&lt;![CDATA[https://starbucks.example.org/orders/?rows=10&amp;offset=0]]&gt;&lt;/item&gt;
+      &lt;item type="counter" name="rows_total"&gt;100&lt;/item&gt;
+   &lt;/metada&gt;
+  &lt;items&gt;
+        &lt;order&gt;
+            &lt;drink&gt;latte&lt;/drink&gt;
+            &lt;additions&gt;shot&lt;/additions&gt;
+            &lt;cost&gt;4.5&lt;/cost&gt;
+            &lt;status&gt;preparing&lt;/status&gt;
+            &lt;_hrefs self="https://starbucks.example.org/orders/12" payments="https://starbucks.example.org/orders/12/payments" /&gt;
+        &lt;/order&gt;
+  &lt;/items&gt;
+&lt;/response&gt;
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Not Found any order.</p><h3>Headers</h3><ul><li><strong>Status</strong>: <em>(string)</em><p>Status</p><p><strong>Example</strong>:</p><pre>404 Not Found</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content-Type</p><p><strong>Example</strong>:</p><pre>application/error-v1+json</pre></li><li><strong>Allow</strong>: <em>(string)</em><p>Allow</p><p><strong>Example</strong>:</p><pre>POST, GET</pre></li></ul><h3>Body</h3><p><strong>Type: application/error-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "status": {
+      "id": "http://jsonschema.net/status",
+      "type": "integer"
+    },
+    "message": {
+      "id": "http://jsonschema.net/message",
+      "type": "string"
+    },
+    "detail": {
+      "id": "http://jsonschema.net/detail",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "message",
+    "detail"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "status": 404,
+  "message": "Orders not found",
+  "detail": "https://starbucks.example.org/doc/orders/#404"
+}
+</code></pre><p><strong>Type: application/error-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="response"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:simpleContent&gt;
+        &lt;xs:extension base="xs:string"&gt;
+          &lt;xs:attribute type="xs:short" name="status"/&gt;
+          &lt;xs:attribute type="xs:string" name="message"/&gt;
+          &lt;xs:attribute type="xs:string" name="detail"/&gt;
+        &lt;/xs:extension&gt;
+      &lt;/xs:simpleContent&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;response status="404" message="Orders not found" detail="https://starbucks.example.org/doc/orders/#404"&gt;
+&lt;/response&gt;
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="orders_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent"></span>/orders</h4></div><div class="modal-body"><div class="alert alert-info"><p>To Created a new order</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by basic<p>Basics of Authentication</p></div><ul class="nav nav-tabs"><li class="active"><a href="#orders_post_request" data-toggle="tab">Request</a></li><li><a href="#orders_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="orders_post_request"><h3>Headers</h3><ul><li><strong>Accept</strong>: <em>(string)</em><p>To negociate the type of response.</p><p><strong>Example</strong>:</p><pre>application/order-v1+json, application/order-v1+xml</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>To indicate the type of the content sent.</p><p><strong>Example</strong>:</p><pre>application/req-order-v1+json</pre></li></ul><h3>Body</h3><p><strong>Type: application/req-order-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "drink": {
+      "id": "http://jsonschema.net/drink",
+      "type": "string"
+    },
+    "additions": {
+      "id": "http://jsonschema.net/additions",
+      "type": "string"
+    }
+  },
+  "required": []
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "drink": "latte",
+  "additions": ""
+}
+</code></pre><p><strong>Type: application/req-order-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="order"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element type="xs:string" name="drink" minOccurs="0" maxOccurs="1"/&gt;
+        &lt;xs:element type="xs:string" name="additions" minOccurs="0" maxOccurs="1"/&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;order&gt;
+   &lt;drink&gt;latte&lt;/drink&gt;
+   &lt;additions/&gt;
+&lt;/order&gt;
+</code></pre></div><div class="tab-pane" id="orders_post_response"><h2>HTTP status code <a href="http://httpstatus.es/201" target="_blank">201</a></h2><p>Operation Success</p><h3>Headers</h3><ul><li><strong>Status</strong>: <em>(string)</em><p>Status</p><p><strong>Example</strong>:</p><pre>201 Created</pre></li><li><strong>Allow</strong>: <em>(string)</em><p>Allow</p><p><strong>Example</strong>:</p><pre>POST, GET</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content Type</p><p><strong>Example</strong>:</p><pre>application/order-v1+xml</pre></li></ul><h3>Body</h3><p><strong>Type: application/order-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "status": {
+      "id": "http://jsonschema.net/status",
+      "type": "integer"
+    },
+    "message": {
+      "id": "http://jsonschema.net/message",
+      "type": "string"
+    },
+    "detail": {
+      "id": "http://jsonschema.net/detail",
+      "type": "string"
+    },
+    "metada": {
+      "id": "http://jsonschema.net/metada",
+      "type": "array",
+      "items": [
+        {
+          "id": "http://jsonschema.net/metada/0",
+          "type": "object",
+          "properties": {
+            "type": {
+              "id": "http://jsonschema.net/metada/0/type",
+              "type": "string"
+            },
+            "name": {
+              "id": "http://jsonschema.net/metada/0/name",
+              "type": "string"
+            },
+            "value": {
+              "id": "http://jsonschema.net/metada/0/value",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "id": "http://jsonschema.net/metada/1",
+          "type": "object",
+          "properties": {
+            "type": {
+              "id": "http://jsonschema.net/metada/1/type",
+              "type": "string"
+            },
+            "name": {
+              "id": "http://jsonschema.net/metada/1/name",
+              "type": "string"
+            },
+            "value": {
+              "id": "http://jsonschema.net/metada/1/value",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "id": "http://jsonschema.net/metada/2",
+          "type": "object",
+          "properties": {
+            "type": {
+              "id": "http://jsonschema.net/metada/2/type",
+              "type": "string"
+            },
+            "name": {
+              "id": "http://jsonschema.net/metada/2/name",
+              "type": "string"
+            },
+            "value": {
+              "id": "http://jsonschema.net/metada/2/value",
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    },
+    "items": {
+      "id": "http://jsonschema.net/items",
+      "type": "array",
+      "items": {
+        "id": "http://jsonschema.net/items/0",
+        "type": "object",
+        "properties": {
+          "drink": {
+            "id": "http://jsonschema.net/items/0/drink",
+            "type": "string"
+          },
+          "additions": {
+            "id": "http://jsonschema.net/items/0/additions",
+            "type": "string"
+          },
+          "cost": {
+            "id": "http://jsonschema.net/items/0/cost",
+            "type": "number"
+          },
+          "status": {
+            "id": "http://jsonschema.net/items/0/status",
+            "type": "string"
+          },
+          "_hrefs": {
+            "id": "http://jsonschema.net/items/0/_hrefs",
+            "type": "object",
+            "properties": {
+              "self": {
+                "id": "http://jsonschema.net/items/0/_hrefs/self",
+                "type": "string"
+              },
+              "payments": {
+                "id": "http://jsonschema.net/items/0/_hrefs/payments",
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "status",
+    "message",
+    "detail",
+    "items"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "status": 201,
+  "message": "Order Created",
+  "detail": "https://starbucks.example.org/doc/orders/",
+  "items": [
+    {
+      "drink": "latte",
+      "additions": "shot",
+      "cost": 4.5,
+      "status": "preparing",
+      "_hrefs": {
+        "self": "https://starbucks.example.org/orders/1",
+        "payments": "https://starbucks.example.org/orders/1/payments"
+      }
+    }
+  ]
+}
+</code></pre><p><strong>Type: application/order-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="response"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name="metada" minOccurs="0"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="item" maxOccurs="unbounded" minOccurs="0"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:simpleContent&gt;
+                    &lt;xs:extension base="xs:string"&gt;
+                      &lt;xs:attribute type="xs:string" name="type" use="optional"/&gt;
+                      &lt;xs:attribute type="xs:string" name="name" use="optional"/&gt;
+                    &lt;/xs:extension&gt;
+                  &lt;/xs:simpleContent&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name="items"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="order" maxOccurs="unbounded" minOccurs="0"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element type="xs:string" name="drink"/&gt;
+                    &lt;xs:element type="xs:string" name="additions"/&gt;
+                    &lt;xs:element type="xs:float" name="cost"/&gt;
+                    &lt;xs:element type="xs:string" name="status"/&gt;
+                    &lt;xs:element name="_hrefs"&gt;
+                      &lt;xs:complexType&gt;
+                        &lt;xs:simpleContent&gt;
+                          &lt;xs:extension base="xs:string"&gt;
+                            &lt;xs:attribute type="xs:string" name="self" use="optional"/&gt;
+                            &lt;xs:attribute type="xs:string" name="payments" use="optional"/&gt;
+                          &lt;/xs:extension&gt;
+                        &lt;/xs:simpleContent&gt;
+                      &lt;/xs:complexType&gt;
+                    &lt;/xs:element&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute type="xs:short" name="status"/&gt;
+      &lt;xs:attribute type="xs:string" name="message"/&gt;
+      &lt;xs:attribute type="xs:string" name="detail"/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;response status="201" message="Order Created" detail="https://starbucks.example.org/doc/orders/"&gt;
+  &lt;items&gt;
+        &lt;order&gt;
+            &lt;drink&gt;latte&lt;/drink&gt;
+            &lt;additions&gt;shot&lt;/additions&gt;
+            &lt;cost&gt;4.5&lt;/cost&gt;
+            &lt;status&gt;preparing&lt;/status&gt;
+            &lt;_hrefs self="https://starbucks.example.org/orders/1" payments="https://starbucks.example.org/orders/1/payments" /&gt;
+        &lt;/order&gt;
+  &lt;/items&gt;
+&lt;/response&gt;
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/400" target="_blank">400</a></h2><p>Bad Request</p><h3>Headers</h3><ul><li><strong>Status</strong>: <em>(string)</em><p>Status</p><p><strong>Example</strong>:</p><pre>400 Bad Request</pre></li><li><strong>Allow</strong>: <em>(string)</em><p>Allow</p><p><strong>Example</strong>:</p><pre>POST, GET</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content Type</p><p><strong>Example</strong>:</p><pre>application/error-v1+xml</pre></li></ul><h3>Body</h3><p><strong>Type: application/error-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "status": {
+      "id": "http://jsonschema.net/status",
+      "type": "integer"
+    },
+    "message": {
+      "id": "http://jsonschema.net/message",
+      "type": "string"
+    },
+    "detail": {
+      "id": "http://jsonschema.net/detail",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "message",
+    "detail"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "status": 400,
+  "message": "Bad Request missing propertie drink",
+  "detail": "https://starbucks.example.org/doc/orders/#400"
+}
+</code></pre><p><strong>Type: application/error-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="response"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:simpleContent&gt;
+        &lt;xs:extension base="xs:string"&gt;
+          &lt;xs:attribute type="xs:short" name="status"/&gt;
+          &lt;xs:attribute type="xs:string" name="message"/&gt;
+          &lt;xs:attribute type="xs:string" name="detail"/&gt;
+        &lt;/xs:extension&gt;
+      &lt;/xs:simpleContent&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;response status="400" message="Bad Request missing propertie drink" detail="https://starbucks.example.org/doc/orders/#400"&gt;
+&lt;/response&gt;
+</code></pre></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_orders__id_"><span class="parent">/orders</span>/{id}</a> <span class="methods"><a href="#orders__id__put"><span class="badge badge_put">put <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a> <a href="#orders__id__delete"><span class="badge badge_delete">delete <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a> <a href="#orders__id__get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a> <a href="#orders__id__options"><span class="badge badge_options">options <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_orders__id_" class="panel-collapse collapse"><div class="panel-body"><div class="resource-description"><p>Manipulate an order.</p></div><div class="list-group"><div onclick="window.location.href = '#orders__id__put'" class="list-group-item"><span class="badge badge_put">put <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Modify the order.</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#orders__id__delete'" class="list-group-item"><span class="badge badge_delete">delete <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Delete the order.</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#orders__id__get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Retrive the given order</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#orders__id__options'" class="list-group-item"><span class="badge badge_options">options <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Retrieve the HTTP verbs allowed.</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="orders__id__put"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_put">put <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/orders</span>/{id}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Modify the order.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by basic<p>Basics of Authentication</p></div><ul class="nav nav-tabs"><li class="active"><a href="#orders__id__put_request" data-toggle="tab">Request</a></li><li><a href="#orders__id__put_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="orders__id__put_request"><h3>URI Parameters</h3><ul><li><strong>id</strong>: <em>required (integer)</em><p>Order identifier.</p><p><strong>Example</strong>:</p><pre><code>1234</code></pre></li></ul><h3>Headers</h3><ul><li><strong>Content-type</strong>: <em>(string)</em><p>Content-Type.</p><p><strong>Example</strong>:</p><pre>application/req-order-v1+json</pre></li><li><strong>Accept</strong>: <em>(string)</em><p>To negociate the type of response.</p><p><strong>Example</strong>:</p><pre>application/order-v1+json, application/order-v1+xml, application/error-v1+json, application/error-v1+xml</pre></li><li><strong>Expect</strong>: <em>(string)</em><p>To check if the update is possible.</p><p><strong>Example</strong>:</p><pre>100-Continue</pre></li></ul><h3>Body</h3><p><strong>Type: application/req-order-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "drink": {
+      "id": "http://jsonschema.net/drink",
+      "type": "string"
+    },
+    "additions": {
+      "id": "http://jsonschema.net/additions",
+      "type": "string"
+    }
+  },
+  "required": []
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "additions": "shot"
+}
+</code></pre><p><strong>Type: application/req-order-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "drink": {
+      "id": "http://jsonschema.net/drink",
+      "type": "string"
+    },
+    "additions": {
+      "id": "http://jsonschema.net/additions",
+      "type": "string"
+    }
+  },
+  "required": []
+}</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;order&gt;
+   &lt;additions&gt;shot&lt;/additions&gt;
+&lt;/order&gt;
+</code></pre></div><div class="tab-pane" id="orders__id__put_response"><h2>HTTP status code <a href="http://httpstatus.es/100" target="_blank">100</a></h2><p>The update is possible</p><h3>Headers</h3><ul><li><strong>Status</strong>: <em>(string)</em><p>Status</p><p><strong>Example</strong>:</p><pre>100 Continue</pre></li><li><strong>Allow</strong>: <em>(string)</em><p>Allow</p><p><strong>Example</strong>:</p><pre>PUT, DELETE, GET</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content Type</p><p><strong>Example</strong>:</p><pre>application/error-v1+xml</pre></li></ul><h3>Body</h3><p><strong>Type: application/error-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "status": {
+      "id": "http://jsonschema.net/status",
+      "type": "integer"
+    },
+    "message": {
+      "id": "http://jsonschema.net/message",
+      "type": "string"
+    },
+    "detail": {
+      "id": "http://jsonschema.net/detail",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "message",
+    "detail"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "status": 100,
+  "message": "The update is possible",
+  "detail": "https://starbucks.example.org/doc/orders/#100"
+}
+</code></pre><p><strong>Type: application/error-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="response"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:simpleContent&gt;
+        &lt;xs:extension base="xs:string"&gt;
+          &lt;xs:attribute type="xs:short" name="status"/&gt;
+          &lt;xs:attribute type="xs:string" name="message"/&gt;
+          &lt;xs:attribute type="xs:string" name="detail"/&gt;
+        &lt;/xs:extension&gt;
+      &lt;/xs:simpleContent&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;response status="100" message="The update is possible" detail="https://starbucks.example.org/doc/orders/#100"&gt;
+&lt;/response&gt;
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>Operation Success</p><h3>Headers</h3><ul><li><strong>Status</strong>: <em>(string)</em><p>Status</p><p><strong>Example</strong>:</p><pre>200 Ok</pre></li><li><strong>Allow</strong>: <em>(string)</em><p>Allow</p><p><strong>Example</strong>:</p><pre>PUT, GET, DELETE</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content Type</p><p><strong>Example</strong>:</p><pre>application/order-v1+xml</pre></li></ul><h3>Body</h3><p><strong>Type: application/order-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "status": {
+      "id": "http://jsonschema.net/status",
+      "type": "integer"
+    },
+    "message": {
+      "id": "http://jsonschema.net/message",
+      "type": "string"
+    },
+    "detail": {
+      "id": "http://jsonschema.net/detail",
+      "type": "string"
+    },
+    "metada": {
+      "id": "http://jsonschema.net/metada",
+      "type": "array",
+      "items": [
+        {
+          "id": "http://jsonschema.net/metada/0",
+          "type": "object",
+          "properties": {
+            "type": {
+              "id": "http://jsonschema.net/metada/0/type",
+              "type": "string"
+            },
+            "name": {
+              "id": "http://jsonschema.net/metada/0/name",
+              "type": "string"
+            },
+            "value": {
+              "id": "http://jsonschema.net/metada/0/value",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "id": "http://jsonschema.net/metada/1",
+          "type": "object",
+          "properties": {
+            "type": {
+              "id": "http://jsonschema.net/metada/1/type",
+              "type": "string"
+            },
+            "name": {
+              "id": "http://jsonschema.net/metada/1/name",
+              "type": "string"
+            },
+            "value": {
+              "id": "http://jsonschema.net/metada/1/value",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "id": "http://jsonschema.net/metada/2",
+          "type": "object",
+          "properties": {
+            "type": {
+              "id": "http://jsonschema.net/metada/2/type",
+              "type": "string"
+            },
+            "name": {
+              "id": "http://jsonschema.net/metada/2/name",
+              "type": "string"
+            },
+            "value": {
+              "id": "http://jsonschema.net/metada/2/value",
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    },
+    "items": {
+      "id": "http://jsonschema.net/items",
+      "type": "array",
+      "items": {
+        "id": "http://jsonschema.net/items/0",
+        "type": "object",
+        "properties": {
+          "drink": {
+            "id": "http://jsonschema.net/items/0/drink",
+            "type": "string"
+          },
+          "additions": {
+            "id": "http://jsonschema.net/items/0/additions",
+            "type": "string"
+          },
+          "cost": {
+            "id": "http://jsonschema.net/items/0/cost",
+            "type": "number"
+          },
+          "status": {
+            "id": "http://jsonschema.net/items/0/status",
+            "type": "string"
+          },
+          "_hrefs": {
+            "id": "http://jsonschema.net/items/0/_hrefs",
+            "type": "object",
+            "properties": {
+              "self": {
+                "id": "http://jsonschema.net/items/0/_hrefs/self",
+                "type": "string"
+              },
+              "payments": {
+                "id": "http://jsonschema.net/items/0/_hrefs/payments",
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "status",
+    "message",
+    "detail",
+    "items"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "status": 200,
+  "message": "Order Updated",
+  "detail": "https://starbucks.example.org/doc/orders/",
+  "items": [
+    {
+      "drink": "latte",
+      "additions": "shot",
+      "cost": 4.5,
+      "status": "preparing",
+      "_hrefs": {
+        "self": "https://starbucks.example.org/orders/1",
+        "payments": "https://starbucks.example.org/orders/1/payments"
+      }
+    }
+  ]
+}
+</code></pre><p><strong>Type: application/order-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="response"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name="metada" minOccurs="0"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="item" maxOccurs="unbounded" minOccurs="0"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:simpleContent&gt;
+                    &lt;xs:extension base="xs:string"&gt;
+                      &lt;xs:attribute type="xs:string" name="type" use="optional"/&gt;
+                      &lt;xs:attribute type="xs:string" name="name" use="optional"/&gt;
+                    &lt;/xs:extension&gt;
+                  &lt;/xs:simpleContent&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name="items"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="order" maxOccurs="unbounded" minOccurs="0"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element type="xs:string" name="drink"/&gt;
+                    &lt;xs:element type="xs:string" name="additions"/&gt;
+                    &lt;xs:element type="xs:float" name="cost"/&gt;
+                    &lt;xs:element type="xs:string" name="status"/&gt;
+                    &lt;xs:element name="_hrefs"&gt;
+                      &lt;xs:complexType&gt;
+                        &lt;xs:simpleContent&gt;
+                          &lt;xs:extension base="xs:string"&gt;
+                            &lt;xs:attribute type="xs:string" name="self" use="optional"/&gt;
+                            &lt;xs:attribute type="xs:string" name="payments" use="optional"/&gt;
+                          &lt;/xs:extension&gt;
+                        &lt;/xs:simpleContent&gt;
+                      &lt;/xs:complexType&gt;
+                    &lt;/xs:element&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute type="xs:short" name="status"/&gt;
+      &lt;xs:attribute type="xs:string" name="message"/&gt;
+      &lt;xs:attribute type="xs:string" name="detail"/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;response status="200" message="Order Updated" detail="https://starbucks.example.org/doc/orders/"&gt;
+  &lt;items&gt;
+        &lt;order&gt;
+            &lt;drink&gt;latte&lt;/drink&gt;
+            &lt;additions&gt;shot&lt;/additions&gt;
+            &lt;cost&gt;4.5&lt;/cost&gt;
+            &lt;status&gt;preparing&lt;/status&gt;
+            &lt;_hrefs self="https://starbucks.example.org/orders/1" payments="https://starbucks.example.org/orders/1/payments" /&gt;
+        &lt;/order&gt;
+  &lt;/items&gt;
+&lt;/response&gt;
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/400" target="_blank">400</a></h2><p>Bad Request</p><h3>Headers</h3><ul><li><strong>Status</strong>: <em>(string)</em><p>Status</p><p><strong>Example</strong>:</p><pre>400 Bad Request</pre></li><li><strong>Allow</strong>: <em>(string)</em><p>Allow</p><p><strong>Example</strong>:</p><pre>PUT, DELETE, GET</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content Type</p><p><strong>Example</strong>:</p><pre>application/error-v1+xml</pre></li></ul><h3>Body</h3><p><strong>Type: application/error-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "status": {
+      "id": "http://jsonschema.net/status",
+      "type": "integer"
+    },
+    "message": {
+      "id": "http://jsonschema.net/message",
+      "type": "string"
+    },
+    "detail": {
+      "id": "http://jsonschema.net/detail",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "message",
+    "detail"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "status": 400,
+  "message": "The addition &#39;shop&#39; not found",
+  "detail": "https://starbucks.example.org/doc/orders/#400"
+}
+</code></pre><p><strong>Type: application/error-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="response"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:simpleContent&gt;
+        &lt;xs:extension base="xs:string"&gt;
+          &lt;xs:attribute type="xs:short" name="status"/&gt;
+          &lt;xs:attribute type="xs:string" name="message"/&gt;
+          &lt;xs:attribute type="xs:string" name="detail"/&gt;
+        &lt;/xs:extension&gt;
+      &lt;/xs:simpleContent&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;response status="400" message="The addition &#39;shop&#39; not found" detail="https://starbucks.example.org/doc/orders/#400"&gt;
+&lt;/response&gt;
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Order Not Found.</p><h3>Headers</h3><ul><li><strong>Status</strong>: <em>(string)</em><p>Status</p><p><strong>Example</strong>:</p><pre>404 Not Found</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content-Type</p><p><strong>Example</strong>:</p><pre>application/error-v1+json</pre></li><li><strong>Allow</strong>: <em>(string)</em><p>Allow</p><p><strong>Example</strong>:</p><pre>PUT, GET, DELETE</pre></li></ul><h3>Body</h3><p><strong>Type: application/error-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "status": {
+      "id": "http://jsonschema.net/status",
+      "type": "integer"
+    },
+    "message": {
+      "id": "http://jsonschema.net/message",
+      "type": "string"
+    },
+    "detail": {
+      "id": "http://jsonschema.net/detail",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "message",
+    "detail"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "status": 404,
+  "message": "Order not found",
+  "detail": "https://starbucks.example.org/doc/orders/#404"
+}
+</code></pre><p><strong>Type: application/error-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="response"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:simpleContent&gt;
+        &lt;xs:extension base="xs:string"&gt;
+          &lt;xs:attribute type="xs:short" name="status"/&gt;
+          &lt;xs:attribute type="xs:string" name="message"/&gt;
+          &lt;xs:attribute type="xs:string" name="detail"/&gt;
+        &lt;/xs:extension&gt;
+      &lt;/xs:simpleContent&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;response status="404" message="Order not found" detail="https://starbucks.example.org/doc/orders/#404"&gt;
+&lt;/response&gt;
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/417" target="_blank">417</a></h2><p>The update not is possible</p><h3>Headers</h3><ul><li><strong>Status</strong>: <em>(string)</em><p>Status</p><p><strong>Example</strong>:</p><pre>417 Expectation Failed</pre></li><li><strong>Allow</strong>: <em>(string)</em><p>Allow</p><p><strong>Example</strong>:</p><pre>PUT, DELETE, GET</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content Type</p><p><strong>Example</strong>:</p><pre>application/error-v1+xml</pre></li></ul><h3>Body</h3><p><strong>Type: application/error-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "status": {
+      "id": "http://jsonschema.net/status",
+      "type": "integer"
+    },
+    "message": {
+      "id": "http://jsonschema.net/message",
+      "type": "string"
+    },
+    "detail": {
+      "id": "http://jsonschema.net/detail",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "message",
+    "detail"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "status": 417,
+  "message": "The update not is possible",
+  "detail": "https://starbucks.example.org/doc/orders/#417"
+}
+</code></pre><p><strong>Type: application/error-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="response"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:simpleContent&gt;
+        &lt;xs:extension base="xs:string"&gt;
+          &lt;xs:attribute type="xs:short" name="status"/&gt;
+          &lt;xs:attribute type="xs:string" name="message"/&gt;
+          &lt;xs:attribute type="xs:string" name="detail"/&gt;
+        &lt;/xs:extension&gt;
+      &lt;/xs:simpleContent&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;response status="417" message="The update not is possible" detail="https://starbucks.example.org/doc/orders/#417"&gt;
+&lt;/response&gt;
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="orders__id__delete"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_delete">delete <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/orders</span>/{id}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Delete the order.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by basic<p>Basics of Authentication</p></div><ul class="nav nav-tabs"><li class="active"><a href="#orders__id__delete_request" data-toggle="tab">Request</a></li><li><a href="#orders__id__delete_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="orders__id__delete_request"><h3>URI Parameters</h3><ul><li><strong>id</strong>: <em>required (integer)</em><p>Order identifier.</p><p><strong>Example</strong>:</p><pre><code>1234</code></pre></li></ul><h3>Headers</h3><ul><li><strong>Accept</strong>: <em>(string)</em><p>To negociate the type of response.</p><p><strong>Example</strong>:</p><pre>application/error-v1+json, application/error-v1+xml</pre></li></ul></div><div class="tab-pane" id="orders__id__delete_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>Order Deleted.</p><h3>Headers</h3><ul><li><strong>Status</strong>: <em>(string)</em><p>Status</p><p><strong>Example</strong>:</p><pre>200 Ok</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content-Type</p><p><strong>Example</strong>:</p><pre>application/error-v1+json</pre></li><li><strong>Allow</strong>: <em>(string)</em><p>Allow</p><p><strong>Example</strong>:</p><pre>PUT, GET, DELETE</pre></li></ul><h3>Body</h3><p><strong>Type: application/error-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "status": {
+      "id": "http://jsonschema.net/status",
+      "type": "integer"
+    },
+    "message": {
+      "id": "http://jsonschema.net/message",
+      "type": "string"
+    },
+    "detail": {
+      "id": "http://jsonschema.net/detail",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "message",
+    "detail"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "status": 200,
+  "message": "Order deleted",
+  "detail": "https://starbucks.example.org/doc/orders/"
+}
+</code></pre><p><strong>Type: application/error-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="response"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:simpleContent&gt;
+        &lt;xs:extension base="xs:string"&gt;
+          &lt;xs:attribute type="xs:short" name="status"/&gt;
+          &lt;xs:attribute type="xs:string" name="message"/&gt;
+          &lt;xs:attribute type="xs:string" name="detail"/&gt;
+        &lt;/xs:extension&gt;
+      &lt;/xs:simpleContent&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;response status="200" message="Order deleted" detail="https://starbucks.example.org/doc/orders/"&gt;
+&lt;/response&gt;
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Order Not Found.</p><h3>Headers</h3><ul><li><strong>Status</strong>: <em>(string)</em><p>Status</p><p><strong>Example</strong>:</p><pre>404 Not Found</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content-Type</p><p><strong>Example</strong>:</p><pre>application/error-v1+json</pre></li><li><strong>Allow</strong>: <em>(string)</em><p>Allow</p><p><strong>Example</strong>:</p><pre>PUT, GET, DELETE</pre></li></ul><h3>Body</h3><p><strong>Type: application/error-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "status": {
+      "id": "http://jsonschema.net/status",
+      "type": "integer"
+    },
+    "message": {
+      "id": "http://jsonschema.net/message",
+      "type": "string"
+    },
+    "detail": {
+      "id": "http://jsonschema.net/detail",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "message",
+    "detail"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "status": 404,
+  "message": "Order not found",
+  "detail": "https://starbucks.example.org/doc/orders/#404"
+}
+</code></pre><p><strong>Type: application/error-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="response"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:simpleContent&gt;
+        &lt;xs:extension base="xs:string"&gt;
+          &lt;xs:attribute type="xs:short" name="status"/&gt;
+          &lt;xs:attribute type="xs:string" name="message"/&gt;
+          &lt;xs:attribute type="xs:string" name="detail"/&gt;
+        &lt;/xs:extension&gt;
+      &lt;/xs:simpleContent&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;response status="404" message="Order not found" detail="https://starbucks.example.org/doc/orders/#404"&gt;
+&lt;/response&gt;
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="orders__id__get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/orders</span>/{id}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Retrive the given order</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by basic<p>Basics of Authentication</p></div><ul class="nav nav-tabs"><li class="active"><a href="#orders__id__get_request" data-toggle="tab">Request</a></li><li><a href="#orders__id__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="orders__id__get_request"><h3>URI Parameters</h3><ul><li><strong>id</strong>: <em>required (integer)</em><p>Order identifier.</p><p><strong>Example</strong>:</p><pre><code>1234</code></pre></li></ul><h3>Headers</h3><ul><li><strong>Accept</strong>: <em>(string)</em><p>To negociate the type of response.</p><p><strong>Example</strong>:</p><pre>application/order-v1+json, application/order-v1+xml</pre></li></ul><h3>Query Parameters</h3><ul><li><strong>Fields</strong>: <em>(string)</em><p>To limmit the number of parameters to response.</p><p><strong>Example</strong>:</p><pre>drink,status</pre></li></ul></div><div class="tab-pane" id="orders__id__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>Operation Sucess, return the orders.</p><h3>Headers</h3><ul><li><strong>Status</strong>: <em>(string)</em><p>Status</p><p><strong>Example</strong>:</p><pre>200 Ok</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content-Type</p><p><strong>Example</strong>:</p><pre>application/order-v1+json</pre></li><li><strong>Allow</strong>: <em>(string)</em><p>Allow</p><p><strong>Example</strong>:</p><pre>POST, GET</pre></li></ul><h3>Body</h3><p><strong>Type: application/order-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "status": {
+      "id": "http://jsonschema.net/status",
+      "type": "integer"
+    },
+    "message": {
+      "id": "http://jsonschema.net/message",
+      "type": "string"
+    },
+    "detail": {
+      "id": "http://jsonschema.net/detail",
+      "type": "string"
+    },
+    "metada": {
+      "id": "http://jsonschema.net/metada",
+      "type": "array",
+      "items": [
+        {
+          "id": "http://jsonschema.net/metada/0",
+          "type": "object",
+          "properties": {
+            "type": {
+              "id": "http://jsonschema.net/metada/0/type",
+              "type": "string"
+            },
+            "name": {
+              "id": "http://jsonschema.net/metada/0/name",
+              "type": "string"
+            },
+            "value": {
+              "id": "http://jsonschema.net/metada/0/value",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "id": "http://jsonschema.net/metada/1",
+          "type": "object",
+          "properties": {
+            "type": {
+              "id": "http://jsonschema.net/metada/1/type",
+              "type": "string"
+            },
+            "name": {
+              "id": "http://jsonschema.net/metada/1/name",
+              "type": "string"
+            },
+            "value": {
+              "id": "http://jsonschema.net/metada/1/value",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "id": "http://jsonschema.net/metada/2",
+          "type": "object",
+          "properties": {
+            "type": {
+              "id": "http://jsonschema.net/metada/2/type",
+              "type": "string"
+            },
+            "name": {
+              "id": "http://jsonschema.net/metada/2/name",
+              "type": "string"
+            },
+            "value": {
+              "id": "http://jsonschema.net/metada/2/value",
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    },
+    "items": {
+      "id": "http://jsonschema.net/items",
+      "type": "array",
+      "items": {
+        "id": "http://jsonschema.net/items/0",
+        "type": "object",
+        "properties": {
+          "drink": {
+            "id": "http://jsonschema.net/items/0/drink",
+            "type": "string"
+          },
+          "additions": {
+            "id": "http://jsonschema.net/items/0/additions",
+            "type": "string"
+          },
+          "cost": {
+            "id": "http://jsonschema.net/items/0/cost",
+            "type": "number"
+          },
+          "status": {
+            "id": "http://jsonschema.net/items/0/status",
+            "type": "string"
+          },
+          "_hrefs": {
+            "id": "http://jsonschema.net/items/0/_hrefs",
+            "type": "object",
+            "properties": {
+              "self": {
+                "id": "http://jsonschema.net/items/0/_hrefs/self",
+                "type": "string"
+              },
+              "payments": {
+                "id": "http://jsonschema.net/items/0/_hrefs/payments",
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "status",
+    "message",
+    "detail",
+    "items"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "status": 200,
+  "message": "Operation Success",
+  "detail": "https://starbucks.example.org/doc/orders/",
+  "items": [
+    {
+      "drink": "latte",
+      "additions": "shot",
+      "cost": 4.5,
+      "status": "preparing",
+      "_hrefs": {
+        "self": "https://starbucks.example.org/orders/12",
+        "payments": "https://starbucks.example.org/orders/12/payments"
+      }
+    }
+  ]
+}
+</code></pre><p><strong>Type: application/order-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="response"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name="metada" minOccurs="0"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="item" maxOccurs="unbounded" minOccurs="0"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:simpleContent&gt;
+                    &lt;xs:extension base="xs:string"&gt;
+                      &lt;xs:attribute type="xs:string" name="type" use="optional"/&gt;
+                      &lt;xs:attribute type="xs:string" name="name" use="optional"/&gt;
+                    &lt;/xs:extension&gt;
+                  &lt;/xs:simpleContent&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name="items"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="order" maxOccurs="unbounded" minOccurs="0"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element type="xs:string" name="drink"/&gt;
+                    &lt;xs:element type="xs:string" name="additions"/&gt;
+                    &lt;xs:element type="xs:float" name="cost"/&gt;
+                    &lt;xs:element type="xs:string" name="status"/&gt;
+                    &lt;xs:element name="_hrefs"&gt;
+                      &lt;xs:complexType&gt;
+                        &lt;xs:simpleContent&gt;
+                          &lt;xs:extension base="xs:string"&gt;
+                            &lt;xs:attribute type="xs:string" name="self" use="optional"/&gt;
+                            &lt;xs:attribute type="xs:string" name="payments" use="optional"/&gt;
+                          &lt;/xs:extension&gt;
+                        &lt;/xs:simpleContent&gt;
+                      &lt;/xs:complexType&gt;
+                    &lt;/xs:element&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute type="xs:short" name="status"/&gt;
+      &lt;xs:attribute type="xs:string" name="message"/&gt;
+      &lt;xs:attribute type="xs:string" name="detail"/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;response status="200" message="Operation Success" detail="https://starbucks.example.org/doc/orders/"&gt;
+  &lt;items&gt;
+        &lt;order&gt;
+            &lt;drink&gt;latte&lt;/drink&gt;
+            &lt;additions&gt;shot&lt;/additions&gt;
+            &lt;cost&gt;4.5&lt;/cost&gt;
+            &lt;status&gt;preparing&lt;/status&gt;
+            &lt;_hrefs self="https://starbucks.example.org/orders/12" payments="https://starbucks.example.org/orders/12/payments" /&gt;
+        &lt;/order&gt;
+  &lt;/items&gt;
+&lt;/response&gt;
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Order Not Found.</p><h3>Headers</h3><ul><li><strong>Status</strong>: <em>(string)</em><p>Status</p><p><strong>Example</strong>:</p><pre>404 Not Found</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content-Type</p><p><strong>Example</strong>:</p><pre>application/error-v1+json</pre></li><li><strong>Allow</strong>: <em>(string)</em><p>Allow</p><p><strong>Example</strong>:</p><pre>POST, GET</pre></li></ul><h3>Body</h3><p><strong>Type: application/error-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "status": {
+      "id": "http://jsonschema.net/status",
+      "type": "integer"
+    },
+    "message": {
+      "id": "http://jsonschema.net/message",
+      "type": "string"
+    },
+    "detail": {
+      "id": "http://jsonschema.net/detail",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "message",
+    "detail"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "status": 404,
+  "message": "Order not found",
+  "detail": "https://starbucks.example.org/doc/orders/#404"
+}
+</code></pre><p><strong>Type: application/error-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="response"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:simpleContent&gt;
+        &lt;xs:extension base="xs:string"&gt;
+          &lt;xs:attribute type="xs:short" name="status"/&gt;
+          &lt;xs:attribute type="xs:string" name="message"/&gt;
+          &lt;xs:attribute type="xs:string" name="detail"/&gt;
+        &lt;/xs:extension&gt;
+      &lt;/xs:simpleContent&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;response status="404" message="Order not found" detail="https://starbucks.example.org/doc/orders/#404"&gt;
+&lt;/response&gt;
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="orders__id__options"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_options">options <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/orders</span>/{id}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Retrieve the HTTP verbs allowed.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by basic<p>Basics of Authentication</p></div><ul class="nav nav-tabs"><li class="active"><a href="#orders__id__options_request" data-toggle="tab">Request</a></li><li><a href="#orders__id__options_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="orders__id__options_request"><h3>URI Parameters</h3><ul><li><strong>id</strong>: <em>required (integer)</em><p>Order identifier.</p><p><strong>Example</strong>:</p><pre><code>1234</code></pre></li></ul></div><div class="tab-pane" id="orders__id__options_response"><h2>HTTP status code <a href="http://httpstatus.es/204" target="_blank">204</a></h2><h3>Headers</h3><ul><li><strong>Allow</strong>: <em>required (string)</em><p>Retrieve the HTTP verbs allowed</p><p><strong>Example</strong>:</p><pre>GET, PUT, DELETE</pre></li></ul></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_orders__id__payments"><span class="parent">/orders/{id}</span>/payments</a> <span class="methods"><a href="#orders__id__payments_post"><span class="badge badge_post">post <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a> <a href="#orders__id__payments_get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a> <a href="#orders__id__payments_options"><span class="badge badge_options">options <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_orders__id__payments" class="panel-collapse collapse"><div class="panel-body"><div class="resource-description"><p>Manipulate the payments of the order.</p></div><div class="list-group"><div onclick="window.location.href = '#orders__id__payments_post'" class="list-group-item"><span class="badge badge_post">post <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Create a payment</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#orders__id__payments_get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Retrieve all payments</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#orders__id__payments_options'" class="list-group-item"><span class="badge badge_options">options <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Retrieve the HTTP verbs allowed</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="orders__id__payments_post"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_post">post <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/orders/{id}</span>/payments</h4></div><div class="modal-body"><div class="alert alert-info"><p>Create a payment</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by basic<p>Basics of Authentication</p></div><ul class="nav nav-tabs"><li class="active"><a href="#orders__id__payments_post_request" data-toggle="tab">Request</a></li><li><a href="#orders__id__payments_post_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="orders__id__payments_post_request"><h3>URI Parameters</h3><ul><li><strong>id</strong>: <em>required (integer)</em><p>Order identifier.</p><p><strong>Example</strong>:</p><pre><code>1234</code></pre></li></ul><h3>Headers</h3><ul><li><strong>Accept</strong>: <em>(string)</em><p>To negociate the type of response.</p><p><strong>Example</strong>:</p><pre>application/error-v1+json, application/error-v1+xml, application/payment-v1+json, application/payment-v1+xml</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content Type</p><p><strong>Example</strong>:</p><pre>application/req-payment-v1+json</pre></li></ul><h3>Body</h3><p><strong>Type: application/req-payment-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "cardNo": {
+      "id": "http://jsonschema.net/cardNo",
+      "type": "string"
+    },
+    "expires": {
+      "id": "http://jsonschema.net/expires",
+      "type": "string"
+    },
+    "name": {
+      "id": "http://jsonschema.net/name",
+      "type": "string"
+    },
+    "amount": {
+      "id": "http://jsonschema.net/amount",
+      "type": "number"
+    }
+  },
+  "required": [
+    "cardNo",
+    "expires",
+    "name",
+    "amount"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "cardNo": "12336272721623871238",
+  "expires": "07/07",
+  "name": "John Doe",
+  "amount": 4.5
+}
+</code></pre><p><strong>Type: application/req-payment-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="payment"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element type="xs:int" name="cardNo"/&gt;
+        &lt;xs:element type="xs:string" name="expires"/&gt;
+        &lt;xs:element type="xs:string" name="name"/&gt;
+        &lt;xs:element type="xs:float" name="amount"/&gt;
+      &lt;/xs:sequence&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;payment&gt;
+   &lt;cardNo&gt;123456789&lt;/cardNo&gt;
+   &lt;expires&gt;07/07&lt;/expires&gt;
+   &lt;name&gt;John Doe&lt;/name&gt;
+   &lt;amount&gt;4.00&lt;/amount&gt;
+&lt;/payment&gt;
+</code></pre></div><div class="tab-pane" id="orders__id__payments_post_response"><h2>HTTP status code <a href="http://httpstatus.es/201" target="_blank">201</a></h2><p>Payment created.</p><h3>Headers</h3><ul><li><strong>Status</strong>: <em>(string)</em><p>Status</p><p><strong>Example</strong>:</p><pre>201 Created</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content-Type</p><p><strong>Example</strong>:</p><pre>application/payment-v1+json</pre></li><li><strong>Allow</strong>: <em>(string)</em><p>Allow</p><p><strong>Example</strong>:</p><pre>POST, GET</pre></li></ul><h3>Body</h3><p><strong>Type: application/payment-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "status": {
+      "id": "http://jsonschema.net/status",
+      "type": "integer"
+    },
+    "message": {
+      "id": "http://jsonschema.net/message",
+      "type": "string"
+    },
+    "detail": {
+      "id": "http://jsonschema.net/detail",
+      "type": "string"
+    },
+    "metada": {
+      "id": "http://jsonschema.net/metada",
+      "type": "array",
+      "items": [
+        {
+          "id": "http://jsonschema.net/metada/0",
+          "type": "object",
+          "properties": {
+            "type": {
+              "id": "http://jsonschema.net/metada/0/type",
+              "type": "string"
+            },
+            "name": {
+              "id": "http://jsonschema.net/metada/0/name",
+              "type": "string"
+            },
+            "value": {
+              "id": "http://jsonschema.net/metada/0/value",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "id": "http://jsonschema.net/metada/1",
+          "type": "object",
+          "properties": {
+            "type": {
+              "id": "http://jsonschema.net/metada/1/type",
+              "type": "string"
+            },
+            "name": {
+              "id": "http://jsonschema.net/metada/1/name",
+              "type": "string"
+            },
+            "value": {
+              "id": "http://jsonschema.net/metada/1/value",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "id": "http://jsonschema.net/metada/2",
+          "type": "object",
+          "properties": {
+            "type": {
+              "id": "http://jsonschema.net/metada/2/type",
+              "type": "string"
+            },
+            "name": {
+              "id": "http://jsonschema.net/metada/2/name",
+              "type": "string"
+            },
+            "value": {
+              "id": "http://jsonschema.net/metada/2/value",
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    },
+    "items": {
+      "id": "http://jsonschema.net/items",
+      "type": "array",
+      "items": {
+        "id": "http://jsonschema.net/items/0",
+        "type": "object",
+        "properties": {
+          "cardNo": {
+            "id": "http://jsonschema.net/items/0/cardNo",
+            "type": "string"
+          },
+          "expires": {
+            "id": "http://jsonschema.net/items/0/expires",
+            "type": "string"
+          },
+          "name": {
+            "id": "http://jsonschema.net/items/0/name",
+            "type": "string"
+          },
+          "amount": {
+            "id": "http://jsonschema.net/items/0/amount",
+            "type": "number"
+          },
+          "_hrefs": {
+            "id": "http://jsonschema.net/items/0/_hrefs",
+            "type": "object",
+            "properties": {
+              "self": {
+                "id": "http://jsonschema.net/items/0/_hrefs/self",
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "status",
+    "message",
+    "detail",
+    "items"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "status": 201,
+  "message": "Payment Created",
+  "detail": "https://starbucks.example.org/doc/payments/",
+  "items": [
+    {
+      "cardNo": "1234567789223141",
+      "expires": "07/07",
+      "name": "John Doe",
+      "amount": 4.5,
+      "_hrefs": {
+        "self": "https://starbucks.example.org/orders/12/payments/123"
+      }
+    }
+  ]
+}
+</code></pre><p><strong>Type: application/payment-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="response"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name="metada" minOccurs="0"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="item" maxOccurs="unbounded" minOccurs="0"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:simpleContent&gt;
+                    &lt;xs:extension base="xs:string"&gt;
+                      &lt;xs:attribute type="xs:string" name="type" use="optional"/&gt;
+                      &lt;xs:attribute type="xs:string" name="name" use="optional"/&gt;
+                    &lt;/xs:extension&gt;
+                  &lt;/xs:simpleContent&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name="items"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="payment"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element type="xs:long" name="cardNo"/&gt;
+                    &lt;xs:element type="xs:string" name="expires"/&gt;
+                    &lt;xs:element type="xs:string" name="name"/&gt;
+                    &lt;xs:element type="xs:float" name="amount"/&gt;
+                    &lt;xs:element name="_hrefs"&gt;
+                      &lt;xs:complexType&gt;
+                        &lt;xs:simpleContent&gt;
+                          &lt;xs:extension base="xs:string"&gt;
+                            &lt;xs:attribute type="xs:string" name="self"/&gt;
+                          &lt;/xs:extension&gt;
+                        &lt;/xs:simpleContent&gt;
+                      &lt;/xs:complexType&gt;
+                    &lt;/xs:element&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute type="xs:short" name="status"/&gt;
+      &lt;xs:attribute type="xs:string" name="message"/&gt;
+      &lt;xs:attribute type="xs:string" name="detail"/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;response status="201" message="Payment Created" detail="https://starbucks.example.org/doc/payments/"&gt;
+  &lt;items&gt;
+      &lt;payment&gt;
+          &lt;cardNo&gt;1234582990303020&lt;/cardNo&gt;
+          &lt;expires&gt;07/07&lt;/expires&gt;
+          &lt;name&gt;John Doe&lt;/name&gt;
+          &lt;amount&gt;4.50&lt;/amount&gt;
+          &lt;_hrefs self="https://starbucks.example.org/orders/12/payments/123"/&gt;
+      &lt;/payment&gt;
+  &lt;/items&gt;
+&lt;/response&gt;
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/400" target="_blank">400</a></h2><p>Bad Request.</p><h3>Headers</h3><ul><li><strong>Status</strong>: <em>(string)</em><p>Status</p><p><strong>Example</strong>:</p><pre>400 Bad Request</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content-Type</p><p><strong>Example</strong>:</p><pre>application/error-v1+json</pre></li><li><strong>Allow</strong>: <em>(string)</em><p>Allow</p><p><strong>Example</strong>:</p><pre>POST, GET</pre></li></ul><h3>Body</h3><p><strong>Type: application/error-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "status": {
+      "id": "http://jsonschema.net/status",
+      "type": "integer"
+    },
+    "message": {
+      "id": "http://jsonschema.net/message",
+      "type": "string"
+    },
+    "detail": {
+      "id": "http://jsonschema.net/detail",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "message",
+    "detail"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "status": 400,
+  "message": "Invalid Card Number",
+  "detail": "https://starbucks.example.org/doc/payments/#400"
+}
+</code></pre><p><strong>Type: application/error-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="response"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:simpleContent&gt;
+        &lt;xs:extension base="xs:string"&gt;
+          &lt;xs:attribute type="xs:short" name="status"/&gt;
+          &lt;xs:attribute type="xs:string" name="message"/&gt;
+          &lt;xs:attribute type="xs:string" name="detail"/&gt;
+        &lt;/xs:extension&gt;
+      &lt;/xs:simpleContent&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;response status="400" message="Invalid Card Number" detail="https://starbucks.example.org/doc/payments/#400"&gt;
+&lt;/response&gt;
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Order Not Found.</p><h3>Headers</h3><ul><li><strong>Status</strong>: <em>(string)</em><p>Status</p><p><strong>Example</strong>:</p><pre>404 Not Found</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content-Type</p><p><strong>Example</strong>:</p><pre>application/error-v1+json</pre></li><li><strong>Allow</strong>: <em>(string)</em><p>Allow</p><p><strong>Example</strong>:</p><pre>POST, GET</pre></li></ul><h3>Body</h3><p><strong>Type: application/error-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "status": {
+      "id": "http://jsonschema.net/status",
+      "type": "integer"
+    },
+    "message": {
+      "id": "http://jsonschema.net/message",
+      "type": "string"
+    },
+    "detail": {
+      "id": "http://jsonschema.net/detail",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "message",
+    "detail"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "status": 404,
+  "message": "Order not found",
+  "detail": "https://starbucks.example.org/doc/orders/#404"
+}
+</code></pre><p><strong>Type: application/error-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="response"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:simpleContent&gt;
+        &lt;xs:extension base="xs:string"&gt;
+          &lt;xs:attribute type="xs:short" name="status"/&gt;
+          &lt;xs:attribute type="xs:string" name="message"/&gt;
+          &lt;xs:attribute type="xs:string" name="detail"/&gt;
+        &lt;/xs:extension&gt;
+      &lt;/xs:simpleContent&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;response status="404" message="Order not found" detail="https://starbucks.example.org/doc/orders/#404"&gt;
+&lt;/response&gt;
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="orders__id__payments_get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/orders/{id}</span>/payments</h4></div><div class="modal-body"><div class="alert alert-info"><p>Retrieve all payments</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by basic<p>Basics of Authentication</p></div><ul class="nav nav-tabs"><li class="active"><a href="#orders__id__payments_get_request" data-toggle="tab">Request</a></li><li><a href="#orders__id__payments_get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="orders__id__payments_get_request"><h3>URI Parameters</h3><ul><li><strong>id</strong>: <em>required (integer)</em><p>Order identifier.</p><p><strong>Example</strong>:</p><pre><code>1234</code></pre></li></ul><h3>Headers</h3><ul><li><strong>Accept</strong>: <em>(string)</em><p>To negociate the type of response.</p><p><strong>Example</strong>:</p><pre>application/error-v1+json, application/error-v1+xml, application/payment-v1+json, application/payment-v1+xml</pre></li></ul><h3>Query Parameters</h3><ul><li><strong>Offset</strong>: <em>(integer)</em><p>Use this to indicate the first element to return.</p><p><strong>Example</strong>:</p><pre><code>1234</code></pre></li><li><strong>Rows</strong>: <em>(integer - default: 10)</em><p>Use this to indicate the number of elements to retrive.</p><p><strong>Example</strong>:</p><pre><code>100</code></pre></li><li><strong>Order</strong>: <em>(one of ASC, DESC - default: ASC)</em><p>Use this to indicate the payment of list elements.</p><p><strong>Example</strong>:</p><pre>DESC</pre></li><li><strong>Lazy</strong>: <em>(one of true, false)</em><p>Use this to indicate we only want obtain the href of the collections.</p><p><strong>Example</strong>:</p><pre>true</pre></li></ul></div><div class="tab-pane" id="orders__id__payments_get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>Retrive All Payments.</p><h3>Headers</h3><ul><li><strong>Status</strong>: <em>(string)</em><p>Status</p><p><strong>Example</strong>:</p><pre>200 Ok</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content-Type</p><p><strong>Example</strong>:</p><pre>application/payment-v1+json</pre></li><li><strong>Allow</strong>: <em>(string)</em><p>Allow</p><p><strong>Example</strong>:</p><pre>POST, GET</pre></li></ul><h3>Body</h3><p><strong>Type: application/payment-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="response"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name="metada" minOccurs="0"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="item" maxOccurs="unbounded" minOccurs="0"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:simpleContent&gt;
+                    &lt;xs:extension base="xs:string"&gt;
+                      &lt;xs:attribute type="xs:string" name="type" use="optional"/&gt;
+                      &lt;xs:attribute type="xs:string" name="name" use="optional"/&gt;
+                    &lt;/xs:extension&gt;
+                  &lt;/xs:simpleContent&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name="items"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="payment"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element type="xs:long" name="cardNo"/&gt;
+                    &lt;xs:element type="xs:string" name="expires"/&gt;
+                    &lt;xs:element type="xs:string" name="name"/&gt;
+                    &lt;xs:element type="xs:float" name="amount"/&gt;
+                    &lt;xs:element name="_hrefs"&gt;
+                      &lt;xs:complexType&gt;
+                        &lt;xs:simpleContent&gt;
+                          &lt;xs:extension base="xs:string"&gt;
+                            &lt;xs:attribute type="xs:string" name="self"/&gt;
+                          &lt;/xs:extension&gt;
+                        &lt;/xs:simpleContent&gt;
+                      &lt;/xs:complexType&gt;
+                    &lt;/xs:element&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute type="xs:short" name="status"/&gt;
+      &lt;xs:attribute type="xs:string" name="message"/&gt;
+      &lt;xs:attribute type="xs:string" name="detail"/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;response status="200" message="Operation Success" detail="https://starbucks.example.org/doc/payments/"&gt;
+  &lt;metada&gt;
+    &lt;item type="href" name="next"&gt;&lt;![CDATA[https://starbucks.example.org/orders/12/payments/?rows=10&amp;offset=20]]&gt;&lt;/item&gt;
+    &lt;item type="href" name="back"&gt;&lt;![CDATA[https://starbucks.example.org/orders/12/payments/?rows=10&amp;offset=0]]&gt;&lt;/item&gt;
+    &lt;item type="counter" name="rows_total"&gt;100&lt;/item&gt;
+  &lt;/metada&gt;
+  &lt;items&gt;
+      &lt;payment&gt;
+          &lt;cardNo&gt;1234582990303020&lt;/cardNo&gt;
+          &lt;expires&gt;07/07&lt;/expires&gt;
+          &lt;name&gt;John Doe&lt;/name&gt;
+          &lt;amount&gt;4.50&lt;/amount&gt;
+          &lt;_hrefs self="https://starbucks.example.org/orders/12/payments/123"/&gt;
+      &lt;/payment&gt;
+  &lt;/items&gt;
+&lt;/response&gt;
+</code></pre><p><strong>Type: application/payment-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "status": {
+      "id": "http://jsonschema.net/status",
+      "type": "integer"
+    },
+    "message": {
+      "id": "http://jsonschema.net/message",
+      "type": "string"
+    },
+    "detail": {
+      "id": "http://jsonschema.net/detail",
+      "type": "string"
+    },
+    "metada": {
+      "id": "http://jsonschema.net/metada",
+      "type": "array",
+      "items": [
+        {
+          "id": "http://jsonschema.net/metada/0",
+          "type": "object",
+          "properties": {
+            "type": {
+              "id": "http://jsonschema.net/metada/0/type",
+              "type": "string"
+            },
+            "name": {
+              "id": "http://jsonschema.net/metada/0/name",
+              "type": "string"
+            },
+            "value": {
+              "id": "http://jsonschema.net/metada/0/value",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "id": "http://jsonschema.net/metada/1",
+          "type": "object",
+          "properties": {
+            "type": {
+              "id": "http://jsonschema.net/metada/1/type",
+              "type": "string"
+            },
+            "name": {
+              "id": "http://jsonschema.net/metada/1/name",
+              "type": "string"
+            },
+            "value": {
+              "id": "http://jsonschema.net/metada/1/value",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "id": "http://jsonschema.net/metada/2",
+          "type": "object",
+          "properties": {
+            "type": {
+              "id": "http://jsonschema.net/metada/2/type",
+              "type": "string"
+            },
+            "name": {
+              "id": "http://jsonschema.net/metada/2/name",
+              "type": "string"
+            },
+            "value": {
+              "id": "http://jsonschema.net/metada/2/value",
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    },
+    "items": {
+      "id": "http://jsonschema.net/items",
+      "type": "array",
+      "items": {
+        "id": "http://jsonschema.net/items/0",
+        "type": "object",
+        "properties": {
+          "cardNo": {
+            "id": "http://jsonschema.net/items/0/cardNo",
+            "type": "string"
+          },
+          "expires": {
+            "id": "http://jsonschema.net/items/0/expires",
+            "type": "string"
+          },
+          "name": {
+            "id": "http://jsonschema.net/items/0/name",
+            "type": "string"
+          },
+          "amount": {
+            "id": "http://jsonschema.net/items/0/amount",
+            "type": "number"
+          },
+          "_hrefs": {
+            "id": "http://jsonschema.net/items/0/_hrefs",
+            "type": "object",
+            "properties": {
+              "self": {
+                "id": "http://jsonschema.net/items/0/_hrefs/self",
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "status",
+    "message",
+    "detail",
+    "items"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "status": 200,
+  "message": "Operation Success",
+  "detail": "https://starbucks.example.org/doc/payments/",
+  "metada": [
+    {
+      "type": "href",
+      "name": "next",
+      "value": "https://starbucks.example.org/orders/12/payments/?rows=10&amp;offset=20"
+    },
+    {
+      "type": "href",
+      "name": "back",
+      "value": "https://starbucks.example.org/orders/12/payments/?rows=10&amp;offset=0"
+    },
+    {
+      "type": "counter",
+      "name": "total_rows",
+      "value": 100
+    }
+  ],
+  "items": [
+    {
+      "cardNo": "1234567789223141",
+      "expires": "07/07",
+      "name": "John Doe",
+      "amount": 4.5,
+      "_hrefs": {
+        "self": "https://starbucks.example.org/orders/12/payments/123"
+      }
+    }
+  ]
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Payment Not Found.</p><h3>Headers</h3><ul><li><strong>Status</strong>: <em>(string)</em><p>Status</p><p><strong>Example</strong>:</p><pre>404 Not Found</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content-Type</p><p><strong>Example</strong>:</p><pre>application/error-v1+json</pre></li><li><strong>Allow</strong>: <em>(string)</em><p>Allow</p><p><strong>Example</strong>:</p><pre>POST, GET</pre></li></ul><h3>Body</h3><p><strong>Type: application/error-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "status": {
+      "id": "http://jsonschema.net/status",
+      "type": "integer"
+    },
+    "message": {
+      "id": "http://jsonschema.net/message",
+      "type": "string"
+    },
+    "detail": {
+      "id": "http://jsonschema.net/detail",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "message",
+    "detail"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "status": 404,
+  "message": "Payments not found",
+  "detail": "https://starbucks.example.org/doc/payments/#404"
+}
+</code></pre><p><strong>Type: application/error-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="response"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:simpleContent&gt;
+        &lt;xs:extension base="xs:string"&gt;
+          &lt;xs:attribute type="xs:short" name="status"/&gt;
+          &lt;xs:attribute type="xs:string" name="message"/&gt;
+          &lt;xs:attribute type="xs:string" name="detail"/&gt;
+        &lt;/xs:extension&gt;
+      &lt;/xs:simpleContent&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;response status="404" message="Payments not found" detail="https://starbucks.example.org/doc/payments/#404"&gt;
+&lt;/response&gt;
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="orders__id__payments_options"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_options">options <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/orders/{id}</span>/payments</h4></div><div class="modal-body"><div class="alert alert-info"><p>Retrieve the HTTP verbs allowed</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by basic<p>Basics of Authentication</p></div><ul class="nav nav-tabs"><li class="active"><a href="#orders__id__payments_options_request" data-toggle="tab">Request</a></li><li><a href="#orders__id__payments_options_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="orders__id__payments_options_request"><h3>URI Parameters</h3><ul><li><strong>id</strong>: <em>required (integer)</em><p>Order identifier.</p><p><strong>Example</strong>:</p><pre><code>1234</code></pre></li></ul></div><div class="tab-pane" id="orders__id__payments_options_response"><h2>HTTP status code <a href="http://httpstatus.es/204" target="_blank">204</a></h2><h3>Headers</h3><ul><li><strong>Allow</strong>: <em>required (string)</em><p>Retrieve the HTTP verbs allowed</p><p><strong>Example</strong>:</p><pre>GET, POST</pre></li></ul></div></div></div></div></div></div></div><div class="panel panel-white"><div class="panel-heading"><h4 class="panel-title"><a class="collapsed" data-toggle="collapse" href="#panel_orders__id__payments__id_"><span class="parent">/orders/{id}/payments</span>/{id}</a> <span class="methods"><a href="#orders__id__payments__id__get"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a> <a href="#orders__id__payments__id__delete"><span class="badge badge_delete">delete <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a> <a href="#orders__id__payments__id__options"><span class="badge badge_options">options <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span></a></span></h4></div><div id="panel_orders__id__payments__id_" class="panel-collapse collapse"><div class="panel-body"><div class="resource-description"><p>Manipulate a payment of the order.</p></div><div class="list-group"><div onclick="window.location.href = '#orders__id__payments__id__get'" class="list-group-item"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Retrive the payment given.</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#orders__id__payments__id__delete'" class="list-group-item"><span class="badge badge_delete">delete <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Delete the payment.</p></div><div class="clearfix"></div></div><div onclick="window.location.href = '#orders__id__payments__id__options'" class="list-group-item"><span class="badge badge_options">options <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span><div class="method_description"><p>Retrieve the HTTP verbs allowed</p></div><div class="clearfix"></div></div></div></div></div><div class="modal fade" tabindex="0" id="orders__id__payments__id__get"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_get">get <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/orders/{id}/payments</span>/{id}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Retrive the payment given.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by basic<p>Basics of Authentication</p></div><ul class="nav nav-tabs"><li class="active"><a href="#orders__id__payments__id__get_request" data-toggle="tab">Request</a></li><li><a href="#orders__id__payments__id__get_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="orders__id__payments__id__get_request"><h3>URI Parameters</h3><ul><li><strong>id</strong>: <em>required (integer)</em><p>Order identifier.</p><p><strong>Example</strong>:</p><pre><code>1234</code></pre></li><li><strong>id</strong>: <em>required (string)</em><p>Orders Payment identifier.</p><p><strong>Example</strong>:</p><pre>12345</pre></li></ul><h3>Headers</h3><ul><li><strong>Accept</strong>: <em>(string)</em><p>To negociate the type of response.</p><p><strong>Example</strong>:</p><pre>application/error-v1+json, application/error-v1+xml, application/payment-v1+json, application/payment-v1+xml</pre></li></ul><h3>Query Parameters</h3><ul><li><strong>Fields</strong>: <em>(string)</em><p>To limmit the number of parameters to response.</p><p><strong>Example</strong>:</p><pre>cardNo,name</pre></li></ul></div><div class="tab-pane" id="orders__id__payments__id__get_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>Retrive the payment given.</p><h3>Headers</h3><ul><li><strong>Status</strong>: <em>(string)</em><p>Status</p><p><strong>Example</strong>:</p><pre>200 Ok</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content-Type</p><p><strong>Example</strong>:</p><pre>application/payment-v1+json</pre></li><li><strong>Allow</strong>: <em>(string)</em><p>Allow</p><p><strong>Example</strong>:</p><pre>GET, DELETE</pre></li></ul><h3>Body</h3><p><strong>Type: application/payment-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="response"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:sequence&gt;
+        &lt;xs:element name="metada" minOccurs="0"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="item" maxOccurs="unbounded" minOccurs="0"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:simpleContent&gt;
+                    &lt;xs:extension base="xs:string"&gt;
+                      &lt;xs:attribute type="xs:string" name="type" use="optional"/&gt;
+                      &lt;xs:attribute type="xs:string" name="name" use="optional"/&gt;
+                    &lt;/xs:extension&gt;
+                  &lt;/xs:simpleContent&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+        &lt;xs:element name="items"&gt;
+          &lt;xs:complexType&gt;
+            &lt;xs:sequence&gt;
+              &lt;xs:element name="payment"&gt;
+                &lt;xs:complexType&gt;
+                  &lt;xs:sequence&gt;
+                    &lt;xs:element type="xs:long" name="cardNo"/&gt;
+                    &lt;xs:element type="xs:string" name="expires"/&gt;
+                    &lt;xs:element type="xs:string" name="name"/&gt;
+                    &lt;xs:element type="xs:float" name="amount"/&gt;
+                    &lt;xs:element name="_hrefs"&gt;
+                      &lt;xs:complexType&gt;
+                        &lt;xs:simpleContent&gt;
+                          &lt;xs:extension base="xs:string"&gt;
+                            &lt;xs:attribute type="xs:string" name="self"/&gt;
+                          &lt;/xs:extension&gt;
+                        &lt;/xs:simpleContent&gt;
+                      &lt;/xs:complexType&gt;
+                    &lt;/xs:element&gt;
+                  &lt;/xs:sequence&gt;
+                &lt;/xs:complexType&gt;
+              &lt;/xs:element&gt;
+            &lt;/xs:sequence&gt;
+          &lt;/xs:complexType&gt;
+        &lt;/xs:element&gt;
+      &lt;/xs:sequence&gt;
+      &lt;xs:attribute type="xs:short" name="status"/&gt;
+      &lt;xs:attribute type="xs:string" name="message"/&gt;
+      &lt;xs:attribute type="xs:string" name="detail"/&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;response status="200" message="Operation Success" detail="https://starbucks.example.org/doc/payments/"&gt;
+  &lt;items&gt;
+      &lt;payment&gt;
+          &lt;cardNo&gt;1234582990303020&lt;/cardNo&gt;
+          &lt;expires&gt;07/07&lt;/expires&gt;
+          &lt;name&gt;John Doe&lt;/name&gt;
+          &lt;amount&gt;4.50&lt;/amount&gt;
+          &lt;_hrefs self="https://starbucks.example.org/orders/12/payments/123"/&gt;
+      &lt;/payment&gt;
+  &lt;/items&gt;
+&lt;/response&gt;
+</code></pre><p><strong>Type: application/payment-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "status": {
+      "id": "http://jsonschema.net/status",
+      "type": "integer"
+    },
+    "message": {
+      "id": "http://jsonschema.net/message",
+      "type": "string"
+    },
+    "detail": {
+      "id": "http://jsonschema.net/detail",
+      "type": "string"
+    },
+    "metada": {
+      "id": "http://jsonschema.net/metada",
+      "type": "array",
+      "items": [
+        {
+          "id": "http://jsonschema.net/metada/0",
+          "type": "object",
+          "properties": {
+            "type": {
+              "id": "http://jsonschema.net/metada/0/type",
+              "type": "string"
+            },
+            "name": {
+              "id": "http://jsonschema.net/metada/0/name",
+              "type": "string"
+            },
+            "value": {
+              "id": "http://jsonschema.net/metada/0/value",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "id": "http://jsonschema.net/metada/1",
+          "type": "object",
+          "properties": {
+            "type": {
+              "id": "http://jsonschema.net/metada/1/type",
+              "type": "string"
+            },
+            "name": {
+              "id": "http://jsonschema.net/metada/1/name",
+              "type": "string"
+            },
+            "value": {
+              "id": "http://jsonschema.net/metada/1/value",
+              "type": "string"
+            }
+          }
+        },
+        {
+          "id": "http://jsonschema.net/metada/2",
+          "type": "object",
+          "properties": {
+            "type": {
+              "id": "http://jsonschema.net/metada/2/type",
+              "type": "string"
+            },
+            "name": {
+              "id": "http://jsonschema.net/metada/2/name",
+              "type": "string"
+            },
+            "value": {
+              "id": "http://jsonschema.net/metada/2/value",
+              "type": "integer"
+            }
+          }
+        }
+      ]
+    },
+    "items": {
+      "id": "http://jsonschema.net/items",
+      "type": "array",
+      "items": {
+        "id": "http://jsonschema.net/items/0",
+        "type": "object",
+        "properties": {
+          "cardNo": {
+            "id": "http://jsonschema.net/items/0/cardNo",
+            "type": "string"
+          },
+          "expires": {
+            "id": "http://jsonschema.net/items/0/expires",
+            "type": "string"
+          },
+          "name": {
+            "id": "http://jsonschema.net/items/0/name",
+            "type": "string"
+          },
+          "amount": {
+            "id": "http://jsonschema.net/items/0/amount",
+            "type": "number"
+          },
+          "_hrefs": {
+            "id": "http://jsonschema.net/items/0/_hrefs",
+            "type": "object",
+            "properties": {
+              "self": {
+                "id": "http://jsonschema.net/items/0/_hrefs/self",
+                "type": "string"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "required": [
+    "status",
+    "message",
+    "detail",
+    "items"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "status": 200,
+  "message": "Operation Success",
+  "detail": "https://starbucks.example.org/doc/payments/",
+  "items": [
+    {
+      "cardNo": "1234567789223141",
+      "expires": "07/07",
+      "name": "John Doe",
+      "amount": 4.5,
+      "_hrefs": {
+        "self": "https://starbucks.example.org/orders/12/payments/123"
+      }
+    }
+  ]
+}
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Payment Not Found.</p><h3>Headers</h3><ul><li><strong>Status</strong>: <em>(string)</em><p>Status</p><p><strong>Example</strong>:</p><pre>404 Not Found</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content-Type</p><p><strong>Example</strong>:</p><pre>application/error-v1+json</pre></li><li><strong>Allow</strong>: <em>(string)</em><p>Allow</p><p><strong>Example</strong>:</p><pre>GET, DELETE</pre></li></ul><h3>Body</h3><p><strong>Type: application/error-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "status": {
+      "id": "http://jsonschema.net/status",
+      "type": "integer"
+    },
+    "message": {
+      "id": "http://jsonschema.net/message",
+      "type": "string"
+    },
+    "detail": {
+      "id": "http://jsonschema.net/detail",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "message",
+    "detail"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "status": 404,
+  "message": "Payment not found",
+  "detail": "https://starbucks.example.org/doc/payments/#404"
+}
+</code></pre><p><strong>Type: application/error-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="response"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:simpleContent&gt;
+        &lt;xs:extension base="xs:string"&gt;
+          &lt;xs:attribute type="xs:short" name="status"/&gt;
+          &lt;xs:attribute type="xs:string" name="message"/&gt;
+          &lt;xs:attribute type="xs:string" name="detail"/&gt;
+        &lt;/xs:extension&gt;
+      &lt;/xs:simpleContent&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;response status="404" message="Payments not found" detail="https://starbucks.example.org/doc/payments/#404"&gt;
+&lt;/response&gt;
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="orders__id__payments__id__delete"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_delete">delete <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/orders/{id}/payments</span>/{id}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Delete the payment.</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by basic<p>Basics of Authentication</p></div><ul class="nav nav-tabs"><li class="active"><a href="#orders__id__payments__id__delete_request" data-toggle="tab">Request</a></li><li><a href="#orders__id__payments__id__delete_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="orders__id__payments__id__delete_request"><h3>URI Parameters</h3><ul><li><strong>id</strong>: <em>required (integer)</em><p>Order identifier.</p><p><strong>Example</strong>:</p><pre><code>1234</code></pre></li><li><strong>id</strong>: <em>required (string)</em><p>Orders Payment identifier.</p><p><strong>Example</strong>:</p><pre>12345</pre></li></ul><h3>Headers</h3><ul><li><strong>Accept</strong>: <em>(string)</em><p>To negociate the type of response.</p><p><strong>Example</strong>:</p><pre>application/error-v1+json, application/error-v1+xml</pre></li></ul></div><div class="tab-pane" id="orders__id__payments__id__delete_response"><h2>HTTP status code <a href="http://httpstatus.es/200" target="_blank">200</a></h2><p>Payment Deleted.</p><h3>Headers</h3><ul><li><strong>Status</strong>: <em>(string)</em><p>Status</p><p><strong>Example</strong>:</p><pre>200 Ok</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content-Type</p><p><strong>Example</strong>:</p><pre>application/error-v1+json</pre></li><li><strong>Allow</strong>: <em>(string)</em><p>Allow</p><p><strong>Example</strong>:</p><pre>GET, DELETE</pre></li></ul><h3>Body</h3><p><strong>Type: application/error-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "status": {
+      "id": "http://jsonschema.net/status",
+      "type": "integer"
+    },
+    "message": {
+      "id": "http://jsonschema.net/message",
+      "type": "string"
+    },
+    "detail": {
+      "id": "http://jsonschema.net/detail",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "message",
+    "detail"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "status": 200,
+  "message": "Payment deleted",
+  "detail": "https://starbucks.example.org/doc/payments/"
+}
+</code></pre><p><strong>Type: application/error-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="response"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:simpleContent&gt;
+        &lt;xs:extension base="xs:string"&gt;
+          &lt;xs:attribute type="xs:short" name="status"/&gt;
+          &lt;xs:attribute type="xs:string" name="message"/&gt;
+          &lt;xs:attribute type="xs:string" name="detail"/&gt;
+        &lt;/xs:extension&gt;
+      &lt;/xs:simpleContent&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;response status="200" message="Payment deleted" detail="https://starbucks.example.org/doc/payments/"&gt;
+&lt;/response&gt;
+</code></pre><h2>HTTP status code <a href="http://httpstatus.es/404" target="_blank">404</a></h2><p>Payment Not Found.</p><h3>Headers</h3><ul><li><strong>Status</strong>: <em>(string)</em><p>Status</p><p><strong>Example</strong>:</p><pre>404 Not Found</pre></li><li><strong>Content-Type</strong>: <em>(string)</em><p>Content-Type</p><p><strong>Example</strong>:</p><pre>application/error-v1+json</pre></li><li><strong>Allow</strong>: <em>(string)</em><p>Allow</p><p><strong>Example</strong>:</p><pre>GET, DELETE</pre></li></ul><h3>Body</h3><p><strong>Type: application/error-v1+json</strong></p><p><strong>Schema</strong>:</p><pre><code>{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "status": {
+      "id": "http://jsonschema.net/status",
+      "type": "integer"
+    },
+    "message": {
+      "id": "http://jsonschema.net/message",
+      "type": "string"
+    },
+    "detail": {
+      "id": "http://jsonschema.net/detail",
+      "type": "string"
+    }
+  },
+  "required": [
+    "status",
+    "message",
+    "detail"
+  ]
+}</code></pre><p><strong>Example</strong>:</p><pre><code>{
+  "status": 404,
+  "message": "Payment not found",
+  "detail": "https://starbucks.example.org/doc/payments/#404"
+}
+</code></pre><p><strong>Type: application/error-v1+xml</strong></p><p><strong>Schema</strong>:</p><pre><code>&lt;xs:schema attributeFormDefault="unqualified" elementFormDefault="qualified" xmlns:xs="http://www.w3.org/2001/XMLSchema"&gt;
+  &lt;xs:element name="response"&gt;
+    &lt;xs:complexType&gt;
+      &lt;xs:simpleContent&gt;
+        &lt;xs:extension base="xs:string"&gt;
+          &lt;xs:attribute type="xs:short" name="status"/&gt;
+          &lt;xs:attribute type="xs:string" name="message"/&gt;
+          &lt;xs:attribute type="xs:string" name="detail"/&gt;
+        &lt;/xs:extension&gt;
+      &lt;/xs:simpleContent&gt;
+    &lt;/xs:complexType&gt;
+  &lt;/xs:element&gt;
+&lt;/xs:schema&gt;</code></pre><p><strong>Example</strong>:</p><pre><code>&lt;response status="404" message="Order not found" detail="https://starbucks.example.org/doc/payments/#404"&gt;
+&lt;/response&gt;
+</code></pre></div></div></div></div></div></div><div class="modal fade" tabindex="0" id="orders__id__payments__id__options"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button><h4 class="modal-title" id="myModalLabel"><span class="badge badge_options">options <span class="glyphicon glyphicon-lock" title="Authentication required"></span></span> <span class="parent">/orders/{id}/payments</span>/{id}</h4></div><div class="modal-body"><div class="alert alert-info"><p>Retrieve the HTTP verbs allowed</p></div><div class="alert alert-warning"><span class="glyphicon glyphicon-lock" title="Authentication required"></span> Secured by basic<p>Basics of Authentication</p></div><ul class="nav nav-tabs"><li class="active"><a href="#orders__id__payments__id__options_request" data-toggle="tab">Request</a></li><li><a href="#orders__id__payments__id__options_response" data-toggle="tab">Response</a></li></ul><div class="tab-content"><div class="tab-pane active" id="orders__id__payments__id__options_request"><h3>URI Parameters</h3><ul><li><strong>id</strong>: <em>required (integer)</em><p>Order identifier.</p><p><strong>Example</strong>:</p><pre><code>1234</code></pre></li><li><strong>id</strong>: <em>required (string)</em><p>Orders Payment identifier.</p><p><strong>Example</strong>:</p><pre>12345</pre></li></ul></div><div class="tab-pane" id="orders__id__payments__id__options_response"><h2>HTTP status code <a href="http://httpstatus.es/204" target="_blank">204</a></h2><h3>Headers</h3><ul><li><strong>Allow</strong>: <em>required (string)</em><p>Retrieve the HTTP verbs allowed</p><p><strong>Example</strong>:</p><pre>GET, DELETE</pre></li></ul></div></div></div></div></div></div></div></div></div></div></div><div class="col-md-3"><div id="sidebar" class="hidden-print affix" role="complementary"><ul class="nav nav-pills nav-stacked"><li><a href="#orders">Orders.</a></li></ul></div></div></div></div></body></html>
