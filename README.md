@@ -1073,11 +1073,17 @@ securitySchemes:
                   required: true
 ```
 
-### Explanation
+### Tips
 
 - To know about RAML see http://raml.org/about.html
 - To inclue markdown file o schema file use ```!include ./error.xsd```
 - Use ```schemas``` to define json schemas o xsd. I recommend define this in another files and include in the raml. In order to reuse in your own code o provide to your API clients
 - Use ```version``` to define your api api version, you can reuse this with {version} like ```baseUri: http://api.e-bookmobile.com/{version}```
-- Use ```protocols``` to define your API protocols link HTTP or HTTPS. I recomend always use HTTPS.
+- Use ```protocols``` to define your API protocols like HTTP or HTTPS. I recomend always use HTTPS.
+- Use ```documentation:``` to define your addition documentation for example Security information or Description about API o License. To include el content from another use include in content, like this ```content: !include ./basic-auth.md```. this secession expected array like:
+```yaml
+  - title: Authentication
+    content: !include ./basic-auth.md
+```
+- 
 
