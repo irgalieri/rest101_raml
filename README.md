@@ -1,7 +1,7 @@
 REST 101 RAML Example - How to get a cup of Coffee
 =====================
 ### Desription
-An example of RAML made based on the article ["How to get a cup of Coffee]("http://www.infoq.com/articles/webber-rest-workflow")
+An example of RAML made based on the article ["How to get a cup of Coffee"](http://www.infoq.com/articles/webber-rest-workflow)
 
 ### The complete example
 ```yaml
