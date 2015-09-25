@@ -1085,5 +1085,11 @@ securitySchemes:
   - title: Authentication
     content: !include ./basic-auth.md
 ```
-- 
+- Use ```securitySchemes:``` to define the security schema in this case a made basic http authentification.
+- Use ```/<resource>``` to define the endpoints. For each you can define the http verbs o method like ```options``` or ```get``. 
+
+### We can do with this RAML file
+Exist a huge numbers of tool that use the RAML file to make mocks or html documentation or test. For Example use raml2html and make this documetation: http://irgalieri.github.io/rest101_raml/
+
+You can find more tool or raml projects in http://raml.org/projects.html.
 
